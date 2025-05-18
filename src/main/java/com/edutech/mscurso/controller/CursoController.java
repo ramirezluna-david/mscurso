@@ -25,7 +25,7 @@ public class CursoController {
     private CursoService cursoService;
 
     @GetMapping
-    public ResponseEntity<List<Curso>> listar() {
+    public ResponseEntity<List<Curso>> listarCursos() {
         List<Curso> cursos = cursoService.findAll();
         if(cursos.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -35,13 +35,13 @@ public class CursoController {
     }
 
     @PostMapping
-    public ResponseEntity<Curso> guardar(@RequestBody Curso curso) {
+    public ResponseEntity<Curso> createCurso(@RequestBody Curso curso) {
         Curso nuevoCurso = cursoService.save(curso);
         return new ResponseEntity<>(nuevoCurso, HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/{idCurso}")
-    public ResponseEntity<Curso> buscar(@PathVariable int idCurso) {
+    public ResponseEntity<Curso> readCurso(@PathVariable int idCurso) {
         try {
             Curso curso = cursoService.findById(idCurso);
             return new ResponseEntity<>(curso, HttpStatus.OK);
@@ -52,7 +52,7 @@ public class CursoController {
     }
 
     @PutMapping("/{idCurso}")
-    public ResponseEntity<Curso> actualizar(@PathVariable int idCurso, @RequestBody Curso curso) {
+    public ResponseEntity<Curso> updateCurso(@PathVariable int idCurso, @RequestBody Curso curso) {
         try {
             Curso cur = cursoService.findById(idCurso);
             cur.setIdCurso(idCurso);
@@ -72,7 +72,7 @@ public class CursoController {
     }
 
     @DeleteMapping("/{idCurso}")
-    public ResponseEntity<?> eliminar(@PathVariable int idCurso) {
+    public ResponseEntity<?> deleteCurso(@PathVariable int idCurso) {
         try {
             cursoService.deleteById(idCurso);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
