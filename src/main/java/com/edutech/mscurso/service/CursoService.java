@@ -19,14 +19,14 @@ public class CursoService {
     }
 
     public Curso findById(int idCurso) {
-        return cursoRepository.findByIdCurso(idCurso);
+        return cursoRepository.findById(idCurso);
     }
 
     public List<Curso> findAll() {
         return cursoRepository.findAll();
     }
 
-    public void delete(int idCurso) {
-        cursoRepository.deleteByIdCurso(idCurso);
+    public void deleteById(int idCurso) {
+        cursoRepository.deleteById(idCurso);
     }
 }

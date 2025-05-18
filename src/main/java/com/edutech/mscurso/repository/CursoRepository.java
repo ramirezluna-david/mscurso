@@ -11,9 +11,9 @@ public interface CursoRepository extends JpaRepository<Curso, Integer>{
 
     Curso save(Curso curso);
 
-    Curso findByIdCurso(int idCurso);
+    Curso findById(int idCurso);
 
     List<Curso> findAll();
 
-    Curso deleteByIdCurso(int idCurso);
+    void deleteById(int idCurso);
 }

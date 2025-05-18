@@ -40,17 +40,18 @@ public class CursoController {
         return new ResponseEntity<>(nuevoCurso, HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{idCurso}")
     public ResponseEntity<Curso> buscar(@PathVariable int idCurso) {
         try {
             Curso curso = cursoService.findById(idCurso);
             return new ResponseEntity<>(curso, HttpStatus.OK);
         } catch(Exception e) {
+            // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{idCurso}")
     public ResponseEntity<Curso> actualizar(@PathVariable int idCurso, @RequestBody Curso curso) {
         try {
             Curso cur = cursoService.findById(idCurso);
@@ -70,10 +71,10 @@ public class CursoController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idCurso}")
     public ResponseEntity<?> eliminar(@PathVariable int idCurso) {
         try {
-            cursoService.delete(idCurso);
+            cursoService.deleteById(idCurso);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch(Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
