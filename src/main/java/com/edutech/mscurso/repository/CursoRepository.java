@@ -1,11 +1,12 @@
 package com.edutech.mscurso.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.edutech.mscurso.model.Curso;
 import java.util.List;
 
-
+@Repository
 public interface CursoRepository extends JpaRepository<Curso, Integer>{
 
     Curso save(Curso curso);
@@ -14,5 +15,5 @@ public interface CursoRepository extends JpaRepository<Curso, Integer>{
 
     List<Curso> findAll();
 
-    Curso deletebyidCurso(int idCurso);
+    Curso deleteByIdCurso(int idCurso);
 }

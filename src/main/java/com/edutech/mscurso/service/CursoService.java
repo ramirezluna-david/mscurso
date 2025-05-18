@@ -9,7 +9,6 @@ import com.edutech.mscurso.model.Curso;
 import com.edutech.mscurso.repository.CursoRepository;
 
 @Service
-
 public class CursoService {
 
     @Autowired
@@ -28,6 +27,6 @@ public class CursoService {
     }
 
     public void delete(int idCurso) {
-        cursoRepository.deletebyidCurso(idCurso);
+        cursoRepository.deleteByIdCurso(idCurso);
     }
 }
