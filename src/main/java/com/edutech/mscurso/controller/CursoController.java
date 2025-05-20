@@ -36,8 +36,14 @@ public class CursoController {
 
     @PostMapping
     public ResponseEntity<Curso> createCurso(@RequestBody Curso curso) {
-        Curso nuevoCurso = cursoService.save(curso);
-        return new ResponseEntity<>(nuevoCurso, HttpStatus.ACCEPTED);
+        Curso buscar = cursoService.findById(curso.getIdCurso());
+        if(buscar == null) {
+            Curso nuevoCurso = cursoService.save(curso);
+            return new ResponseEntity<>(nuevoCurso, HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
     }
 
     @GetMapping("/{idCurso}")
