@@ -48,10 +48,10 @@ public class CursoController {
 
     @GetMapping("/{idCurso}")
     public ResponseEntity<Curso> readCurso(@PathVariable int idCurso) {
-        try {
-            Curso curso = cursoService.findById(idCurso);
-            return new ResponseEntity<>(curso, HttpStatus.OK);
-        } catch(Exception e) {
+        Curso buscarCurso = cursoService.findById(idCurso);
+        if(buscarCurso != null) {
+            return new ResponseEntity<>(buscarCurso, HttpStatus.OK);
+        } else {
             // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -59,8 +59,8 @@ public class CursoController {
 
     @PutMapping("/{idCurso}")
     public ResponseEntity<Curso> updateCurso(@PathVariable int idCurso, @RequestBody Curso curso) {
-        try {
-            Curso cur = cursoService.findById(idCurso);
+        Curso cur = cursoService.findById(idCurso);
+        if(cur != null) {
             cur.setIdCurso(idCurso);
             cur.setTitulo(curso.getTitulo());
             cur.setDescripcion(curso.getDescripcion());
@@ -72,17 +72,18 @@ public class CursoController {
 
             cursoService.save(cur);
             return new ResponseEntity<>(curso, HttpStatus.OK);
-        } catch(Exception e) {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/{idCurso}")
     public ResponseEntity<?> deleteCurso(@PathVariable int idCurso) {
-        try {
+        Curso buscarCurso = cursoService.findById(idCurso);
+        if(buscarCurso != null) {
             cursoService.deleteById(idCurso);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch(Exception e) {
+        } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
