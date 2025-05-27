@@ -1,6 +1,7 @@
 package com.edutech.mscurso.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,18 +61,7 @@ public class CursoController {
 
     @PutMapping("/{idCurso}")
     public ResponseEntity<Curso> updateCurso(@PathVariable int idCurso, @RequestBody Curso curso) {
-        Curso cur = cursoService.findById(idCurso);
-        if(cur != null) {
-            cur.setIdCurso(idCurso);
-            cur.setTitulo(curso.getTitulo());
-            cur.setDescripcion(curso.getDescripcion());
-            cur.setCategoria(curso.getCategoria());
-            cur.setPrecio(curso.getPrecio());
-            cur.setIdProfesor(curso.getIdProfesor());
-            cur.setFechaCreacion(curso.getFechaCreacion());
-            cur.setPublicado(curso.getPublicado());
-
-            cursoService.save(cur);
+        if(cursoService.update(idCurso, curso)) {
             return new ResponseEntity<>(curso, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -93,6 +83,16 @@ public class CursoController {
     public ResponseEntity<?> cambiarVisibilidad(@PathVariable int idCurso) {
         if(cursoService.cambiarVisibilidad(idCurso)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{idCurso}/modificar/tutor")
+    public ResponseEntity<?> asignarTutor(@PathVariable int idCurso, @RequestBody Map<String, Integer> body) {
+        int idProfesor = body.get("idProfesor");
+        if(cursoService.asignarTutor(idCurso, idProfesor)) {
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
