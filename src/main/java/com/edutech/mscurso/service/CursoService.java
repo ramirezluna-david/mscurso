@@ -29,4 +29,15 @@ public class CursoService {
     public void deleteById(int idCurso) {
         cursoRepository.deleteById(idCurso);
     }
+
+    public Boolean cambiarVisibilidad(int idCurso) {
+        Curso buscarCurso = cursoRepository.findById(idCurso);
+        if(buscarCurso != null) {
+            buscarCurso.setPublicado((!buscarCurso.getPublicado()));
+            cursoRepository.save(buscarCurso);
+            return true;
+        }
+
+        return false;
+    }
 }

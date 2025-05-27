@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -82,6 +83,15 @@ public class CursoController {
         Curso buscarCurso = cursoService.findById(idCurso);
         if(buscarCurso != null) {
             cursoService.deleteById(idCurso);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("/{idCurso}/modificar/visibilidad")
+    public ResponseEntity<?> cambiarVisibilidad(@PathVariable int idCurso) {
+        if(cursoService.cambiarVisibilidad(idCurso)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
