@@ -1,0 +1,11 @@
+INSERT INTO curso (titulo, descripcion, categoria, precio, id_profesor, fecha_creacion, publicado) VALUES
+('Java Básico', 'Curso introductorio para aprender Java desde cero.', 'Programación', 99.99, 1, '2024-01-01', TRUE),
+('Bases de Datos', 'Curso completo sobre bases de datos relacionales y SQL.', 'Bases de Datos', 120.00, 2, '2024-01-15', TRUE),
+('Desarrollo Web', 'Aprende a crear sitios web con HTML, CSS y JavaScript.', 'Desarrollo Web', 150.50, 3, '2024-02-01', TRUE),
+('Spring Framework', 'Curso avanzado sobre desarrollo con Spring Framework.', 'Programación', 200.00, 1, '2024-02-20', FALSE),
+('Seguridad Informática', 'Conceptos y prácticas en seguridad informática.', 'Seguridad', 180.75, 4, '2024-03-05', TRUE),
+('JavaScript Avanzado', 'Profundiza en JavaScript y sus frameworks.', 'Programación', 140.00, 3, '2024-03-20', TRUE),
+('Manejo de Proyectos', 'Cómo gestionar proyectos de software de forma efectiva.', 'Gestión', 110.00, 5, '2024-04-01', FALSE),
+('Análisis de Datos', 'Introducción a la analítica y visualización de datos.', 'Data Science', 130.00, 6, '2024-04-10', TRUE),
+('DevOps Básico', 'Principios de integración continua y despliegue automático.', 'DevOps', 125.50, 7, '2024-04-25', TRUE),
+('Cloud Computing', 'Fundamentos y práctica en servicios en la nube.', 'Tecnología', 170.00, 8, '2024-05-01', TRUE);
