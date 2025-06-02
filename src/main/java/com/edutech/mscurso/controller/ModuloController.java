@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.edutech.mscurso.model.Curso;
 import com.edutech.mscurso.model.Modulo;
+import com.edutech.mscurso.service.CursoService;
 import com.edutech.mscurso.service.ModuloService;
 
 @RestController
@@ -23,6 +25,9 @@ public class ModuloController {
 
     @Autowired
     private ModuloService moduloService;
+
+    @Autowired
+    private CursoService cursoService;
 
     @GetMapping
     public ResponseEntity<List<Modulo>> listarModulos() {
@@ -36,6 +41,12 @@ public class ModuloController {
 
     @PostMapping
     public ResponseEntity<Modulo> createModulo(@RequestBody Modulo modulo) {
+        int idLink = modulo.getCurso().getIdCurso();
+        Curso curso = cursoService.cursoxId(idLink);
+        if(curso != null) {
+            modulo.setCurso(curso);
+        }
+
         Modulo buscarModulo = moduloService.findById(modulo.getIdModulo());
         if(buscarModulo == null) {
             Modulo nuevoModulo = moduloService.save(modulo);

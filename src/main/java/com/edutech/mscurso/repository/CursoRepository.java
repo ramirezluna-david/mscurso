@@ -16,4 +16,6 @@ public interface CursoRepository extends JpaRepository<Curso, Integer>{
     List<Curso> findAll();
 
     void deleteById(int idCurso);
+
+    Curso getReferenceById(int idCurso);
 }

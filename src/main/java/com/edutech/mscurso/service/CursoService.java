@@ -31,6 +31,10 @@ public class CursoService {
         cursoRepository.deleteById(idCurso);
     }
 
+    public Curso cursoxId(int idCurso) {
+        return cursoRepository.getReferenceById(idCurso);
+    }
+
     public Boolean cambiarVisibilidad(int idCurso) {
         Curso buscarCurso = cursoRepository.findById(idCurso);
         if(buscarCurso != null) {
