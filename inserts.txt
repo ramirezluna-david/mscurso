@@ -1,11 +1,46 @@
-INSERT INTO curso (titulo, descripcion, categoria, precio, id_profesor, fecha_creacion, publicado) VALUES
-('Java Básico', 'Curso introductorio para aprender Java desde cero.', 'Programación', 99.99, 1, '2024-01-01', TRUE),
-('Bases de Datos', 'Curso completo sobre bases de datos relacionales y SQL.', 'Bases de Datos', 120.00, 2, '2024-01-15', TRUE),
-('Desarrollo Web', 'Aprende a crear sitios web con HTML, CSS y JavaScript.', 'Desarrollo Web', 150.50, 3, '2024-02-01', TRUE),
-('Spring Framework', 'Curso avanzado sobre desarrollo con Spring Framework.', 'Programación', 200.00, 1, '2024-02-20', FALSE),
-('Seguridad Informática', 'Conceptos y prácticas en seguridad informática.', 'Seguridad', 180.75, 4, '2024-03-05', TRUE),
-('JavaScript Avanzado', 'Profundiza en JavaScript y sus frameworks.', 'Programación', 140.00, 3, '2024-03-20', TRUE),
-('Manejo de Proyectos', 'Cómo gestionar proyectos de software de forma efectiva.', 'Gestión', 110.00, 5, '2024-04-01', FALSE),
-('Análisis de Datos', 'Introducción a la analítica y visualización de datos.', 'Data Science', 130.00, 6, '2024-04-10', TRUE),
-('DevOps Básico', 'Principios de integración continua y despliegue automático.', 'DevOps', 125.50, 7, '2024-04-25', TRUE),
-('Cloud Computing', 'Fundamentos y práctica en servicios en la nube.', 'Tecnología', 170.00, 8, '2024-05-01', TRUE);
+INSERT INTO curso (
+    id_curso, titulo, descripcion, categoria, precio, id_profesor, fecha_creacion, publicado
+) VALUES
+(1, 'Java Básico', 'Curso introductorio de Java para principiantes.', 'Programación', 49.99, 101, '2024-05-01', TRUE),
+(2, 'Python Intermedio', 'Aprende estructuras de datos y POO en Python.', 'Programación', 59.99, 102, '2024-05-05', TRUE),
+(3, 'Diseño UX/UI', 'Fundamentos del diseño de experiencia de usuario e interfaz.', 'Diseño', 69.50, 103, '2024-04-15', FALSE),
+(4, 'Bases de Datos', 'Curso sobre modelado y consultas SQL.', 'Base de Datos', 79.00, 101, '2024-03-20', TRUE),
+(5, 'Machine Learning', 'Inteligencia artificial aplicada con algoritmos de ML.', 'Inteligencia Artificial', 120.00, 104, '2024-06-01', TRUE);
+
+INSERT INTO modulo (
+    id_modulo, titulo, descripcion, id_curso
+) VALUES
+(1, 'Introducción a Java', 'Este módulo cubre los fundamentos del lenguaje Java.', 1),
+(2, 'POO en Java', 'Profundización en los principios de la Programación Orientada a Objetos en Java.', 1),
+(3, 'Fundamentos de Python', 'Inicio del aprendizaje en Python con sintaxis básica.', 2),
+(4, 'Listas y Diccionarios', 'Manejo de estructuras de datos comunes en Python.', 2),
+(5, 'Principios de UX', 'Exploración de conceptos fundamentales en experiencia de usuario.', 3),
+(6, 'Diseño de Interfaces', 'Cómo diseñar interfaces intuitivas para usuarios.', 3),
+(7, 'Modelo Relacional', 'Estructuración de datos y relaciones entre tablas.', 4),
+(8, 'Consultas SQL Básicas', 'Uso de SELECT, WHERE, JOIN, y otros comandos SQL.', 4),
+(9, 'Introducción al ML', 'Definiciones, historia y aplicaciones del aprendizaje automático.', 5),
+(10, 'Regresión Lineal', 'Primer algoritmo de Machine Learning aplicado a datos reales.', 5);
+
+INSERT INTO clase (
+    id_clase, titulo, descripcion, categoria, fecha_creacion, publicado, id_modulo
+) VALUES
+(1, 'Sintaxis Básica', 'Aprende sobre variables, tipos de datos y operadores en Java.', 'Programación', '2024-05-01', TRUE, 1),
+(2, 'Control de Flujo', 'Condicionales y bucles en Java.', 'Programación', '2024-05-02', TRUE, 1),
+(3, 'Clases y Objetos', 'Introducción a la creación de clases y objetos.', 'POO', '2024-05-03', TRUE, 2),
+(4, 'Herencia', 'Concepto de herencia y su implementación en Java.', 'POO', '2024-05-04', TRUE, 2),
+(5, 'Variables en Python', 'Uso de variables y tipos de datos en Python.', 'Programación', '2024-05-06', TRUE, 3),
+(6, 'Operadores', 'Operadores aritméticos, lógicos y de comparación.', 'Programación', '2024-05-06', TRUE, 3),
+(7, 'Listas', 'Estructura de datos tipo lista en Python.', 'Estructuras de Datos', '2024-05-07', TRUE, 4),
+(8, 'Diccionarios', 'Acceso y manipulación de diccionarios.', 'Estructuras de Datos', '2024-05-08', TRUE, 4),
+(9, 'Principios UX', 'Qué es UX y por qué es importante.', 'Diseño', '2024-04-10', TRUE, 5),
+(10, 'Personas y escenarios', 'Creación de arquetipos y escenarios de uso.', 'Diseño', '2024-04-11', FALSE, 5),
+(11, 'Wireframes', 'Diseño de prototipos rápidos.', 'Diseño', '2024-04-12', TRUE, 6),
+(12, 'Diseño visual', 'Elementos gráficos y estilo visual.', 'Diseño', '2024-04-13', TRUE, 6),
+(13, 'Entidades y relaciones', 'Diseño de entidades y sus relaciones en base de datos.', 'Base de Datos', '2024-03-20', TRUE, 7),
+(14, 'Normalización', 'Técnicas para evitar redundancia en bases de datos.', 'Base de Datos', '2024-03-21', TRUE, 7),
+(15, 'SELECT básico', 'Consultas simples para extraer datos.', 'SQL', '2024-03-22', TRUE, 8),
+(16, 'JOINs', 'Uso de INNER JOIN, LEFT JOIN, etc.', 'SQL', '2024-03-23', TRUE, 8),
+(17, 'Introducción al ML', 'Historia y fundamentos del aprendizaje automático.', 'Inteligencia Artificial', '2024-06-01', TRUE, 9),
+(18, 'Dataset y Features', 'Cómo preparar datos para algoritmos de ML.', 'Inteligencia Artificial', '2024-06-02', TRUE, 9),
+(19, 'Regresión lineal simple', 'Aplicación práctica del modelo de regresión lineal.', 'Machine Learning', '2024-06-03', TRUE, 10),
+(20, 'Evaluación de modelos', 'Métricas como MAE, RMSE y R².', 'Machine Learning', '2024-06-04', FALSE, 10);
