@@ -3,6 +3,7 @@ package com.edutech.mscurso.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,16 +69,17 @@ public class CursoController {
         }
     }
 
-    @DeleteMapping("/{idCurso}")
-    public ResponseEntity<?> deleteCurso(@PathVariable int idCurso) {
-        Curso buscarCurso = cursoService.findById(idCurso);
-        if(buscarCurso != null) {
-            cursoService.deleteById(idCurso);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    // REGISTROS YA NO SE ELIMINAN, SE CAMBIA ESTADO ACTIVO O INACTIVO
+    // @DeleteMapping("/{idCurso}")
+    // public ResponseEntity<?> deleteCurso(@PathVariable int idCurso) {
+    //     Curso buscarCurso = cursoService.findById(idCurso);
+    //     if(buscarCurso != null) {
+    //         cursoService.deleteById(idCurso);
+    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    //     } else {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
 
     @PatchMapping("/{idCurso}/modificar/visibilidad")
     public ResponseEntity<?> cambiarVisibilidad(@PathVariable int idCurso) {
@@ -92,6 +94,15 @@ public class CursoController {
     public ResponseEntity<?> asignarTutor(@PathVariable int idCurso, @RequestBody Map<String, Integer> body) {
         int idProfesor = body.get("idProfesor");
         if(cursoService.asignarTutor(idCurso, idProfesor)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PatchMapping("{idCurso}/activar")
+    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable int idCurso) {
+        if(cursoService.activar(idCurso)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

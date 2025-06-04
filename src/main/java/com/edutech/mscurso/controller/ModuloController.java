@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -76,12 +77,22 @@ public class ModuloController {
         }
     }
 
-    @DeleteMapping("/{idModulo}")
-    public ResponseEntity<?> deleteModulo(@PathVariable int idModulo) {
-        Modulo buscarModulo = moduloService.findById(idModulo);
-        if(buscarModulo != null) {
-            moduloService.deleteById(idModulo);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    // REGISTROS YA NO SE ELIMINAN, SE CAMBIA ESTADO ACTIVO O INACTIVO
+    // @DeleteMapping("/{idModulo}")
+    // public ResponseEntity<?> deleteModulo(@PathVariable int idModulo) {
+    //     Modulo buscarModulo = moduloService.findById(idModulo);
+    //     if(buscarModulo != null) {
+    //         moduloService.deleteById(idModulo);
+    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    //     } else {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
+
+    @PatchMapping("/{idModulo}/activar")
+    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable int idModulo) {
+        if(moduloService.activar(idModulo)) {
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

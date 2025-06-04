@@ -47,6 +47,9 @@ public class Clase {
     @Column(nullable = false)
     private Boolean publicado;
 
+    @Column(nullable = false)
+    private Boolean activo;
+
     @ManyToOne()
     @JoinColumn(name = "idModulo")
     @JsonBackReference

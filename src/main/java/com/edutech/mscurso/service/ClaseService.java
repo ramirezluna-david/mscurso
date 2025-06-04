@@ -64,4 +64,15 @@ public class ClaseService {
             return false;
         }
     }
+
+    public Boolean activar(int idClase) {
+        Clase buscarClase = claseRepository.findById(idClase);
+        if(buscarClase != null) {
+            buscarClase.setActivo(!buscarClase.getPublicado());
+            claseRepository.save(buscarClase);
+            return true;
+        }
+
+        return false;
+    }
 }

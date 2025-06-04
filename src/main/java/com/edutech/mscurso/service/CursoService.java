@@ -75,4 +75,15 @@ public class CursoService {
 
         return false;
     }
+
+    public Boolean activar(int idCurso) {
+        Curso buscarCurso = cursoRepository.findById(idCurso);
+        if(buscarCurso != null) {
+            buscarCurso.setActivo(!buscarCurso.getActivo());
+            cursoRepository.save(buscarCurso);
+            return true;
+        }
+
+        return false;
+    }
 }

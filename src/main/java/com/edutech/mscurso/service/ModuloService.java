@@ -50,4 +50,15 @@ public class ModuloService {
             return false;
         }
     }
+
+    public Boolean activar(int idModulo) {
+        Modulo buscarModulo = moduloRepository.findById(idModulo);
+        if(buscarModulo != null) {
+            buscarModulo.setActivo(!buscarModulo.getActivo());
+            moduloRepository.save(buscarModulo);
+            return true;
+        }
+
+        return false;
+    }
 }

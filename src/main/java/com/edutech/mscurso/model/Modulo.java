@@ -45,6 +45,9 @@ public class Modulo {
     @JsonManagedReference
     private List<Clase> clases;
 
+    @Column(nullable = false)
+    private Boolean activo;
+
     @ManyToOne()
     @JoinColumn(name = "idCurso")
     @JsonBackReference

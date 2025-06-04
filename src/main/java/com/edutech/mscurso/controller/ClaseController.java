@@ -77,21 +77,31 @@ public class ClaseController {
         }
     }
 
-    @DeleteMapping("/{idClase}")
-    public ResponseEntity<?> deleteClase(@PathVariable int idClase) {
-        Clase buscarClase = claseService.findById(idClase);
-        if(buscarClase != null) {
-            claseService.deleteById(idClase);
+    // REGISTROS YA NO SE ELIMINAN, SE CAMBIA ESTADO ACTIVO O INACTIVO
+    // @DeleteMapping("/{idClase}")
+    // public ResponseEntity<?> deleteClase(@PathVariable int idClase) {
+    //     Clase buscarClase = claseService.findById(idClase);
+    //     if(buscarClase != null) {
+    //         claseService.deleteById(idClase);
+    //         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    //     } else {
+    //         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    //     }
+    // }
+
+    @PatchMapping("/{idClase}/modificar/visibilidad")
+    public ResponseEntity<?> cambiarVisibilidad(@PathVariable int idClase) {
+        if(claseService.cambiarVisibilidad(idClase)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @PatchMapping("/{idClase}/modificar/visibilidad")
-    public ResponseEntity<?> cambiarVisibilidad(@PathVariable int idClase) {
-        if(claseService.cambiarVisibilidad(idClase)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @PatchMapping("/{idClase}/activar")
+    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable int idClase) {
+        if(claseService.activar(idClase)) {
+            return new ResponseEntity<>(HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

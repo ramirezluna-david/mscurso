@@ -51,6 +51,9 @@ public class Curso {
     @Column(nullable = false)
     private Boolean publicado;
 
+    @Column(nullable = false)
+    private Boolean activo;
+
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Modulo> modulos;
