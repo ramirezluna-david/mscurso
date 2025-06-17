@@ -1,6 +1,7 @@
 package com.edutech.mscurso.repository;
 
-import java.util.List;
+// import java.util.List;
+// import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,15 +9,16 @@ import org.springframework.stereotype.Repository;
 import com.edutech.mscurso.model.Clase;
 
 @Repository
-public interface ClaseRepository extends JpaRepository<Clase, Integer>{
+public interface ClaseRepository extends JpaRepository<Clase, Long>{
 
-    Clase save(Clase clase);
+    // @SuppressWarnings("unchecked")
+    // Clase save(Clase clase);
 
-    Clase findById(int idClase);
+    // Optional<Clase> findById(Long idClase);
 
-    List<Clase> findAll();
+    // List<Clase> findAll();
 
-    void deleteById(int idClase);
+    // void deleteById(Long idClase);
 
     // Clase getReferenceById(int idClase);
 }

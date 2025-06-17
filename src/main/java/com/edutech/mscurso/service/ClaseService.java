@@ -1,10 +1,11 @@
 package com.edutech.mscurso.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+// import org.springframework.http.HttpStatus;
+// import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.edutech.mscurso.model.Clase;
@@ -20,7 +21,7 @@ public class ClaseService {
         return claseRepository.save(clase);
     }
 
-    public Clase findById(int idClase) {
+    public Optional<Clase> findById(Long idClase) {
         return claseRepository.findById(idClase);
     }
 
@@ -28,7 +29,7 @@ public class ClaseService {
         return claseRepository.findAll();
     }
 
-    public void deleteById(int idClase) {
+    public void deleteById(Long idClase) {
         claseRepository.deleteById(idClase);
     }
 
@@ -36,37 +37,40 @@ public class ClaseService {
         return claseRepository.getReferenceById(idClase);
     } */
 
-    public Boolean cambiarVisibilidad(int idClase) {
-        Clase buscarClase = claseRepository.findById(idClase);
+    public Boolean cambiarVisibilidad(Long idClase) {
+        Clase buscarClase = claseRepository.findById(idClase)
+            .orElseThrow(() -> new RuntimeException("No existe la clase"));
         if(buscarClase != null) {
-            buscarClase.setPublicado((!buscarClase.getPublicado()));
-            claseRepository.save(buscarClase);
+        buscarClase.setPublicado((!buscarClase.getPublicado()));
+        claseRepository.save(buscarClase);
             return true;
         }
 
         return false;
     }
 
-    public Boolean update(int idClase, Clase clase) {
-        Clase cla = claseRepository.findById(idClase);
-        if(cla != null) {
-            cla.setIdClase(idClase);
-            // cla.setIdCurso(clase.getIdCurso());
-            cla.setTitulo(clase.getTitulo());
-            cla.setDescripcion(clase.getDescripcion());
-            cla.setCategoria(clase.getCategoria());
-            cla.setFechaCreacion(clase.getFechaCreacion());
-            cla.setPublicado(clase.getPublicado());
+    public Boolean update(Long idClase, Clase clase) {
+        Clase existente = claseRepository.findById(idClase)
+            .orElseThrow(() -> new RuntimeException("No existe la clase"));
+        if(existente != null) {
+            // existente.setIdClase(idClase);
+            // existente.setIdCurso(clase.getIdCurso());
+            existente.setTitulo(clase.getTitulo());
+            existente.setDescripcion(clase.getDescripcion());
+            existente.setCategoria(clase.getCategoria());
+            existente.setFechaCreacion(clase.getFechaCreacion());
+            existente.setPublicado(clase.getPublicado());
 
-            claseRepository.save(cla);
+            claseRepository.save(existente);
             return true;
         } else {
             return false;
         }
     }
 
-    public Boolean activar(int idClase) {
-        Clase buscarClase = claseRepository.findById(idClase);
+    public Boolean activar(Long idClase) {
+        Clase buscarClase = claseRepository.findById(idClase)
+            .orElseThrow(() -> new RuntimeException("No existe la clase"));
         if(buscarClase != null) {
             buscarClase.setActivo(!buscarClase.getPublicado());
             claseRepository.save(buscarClase);

@@ -32,7 +32,7 @@ public class ModuloService {
         moduloRepository.deleteById(idCurso);
     }
 
-    public Modulo moduloxId(int idModulo) {
+    public Modulo moduloxId(Long idModulo) {
         return moduloRepository.getReferenceById(idModulo);
     }
 

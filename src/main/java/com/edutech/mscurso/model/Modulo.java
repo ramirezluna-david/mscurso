@@ -30,7 +30,7 @@ public class Modulo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idModulo;
+    private Long idModulo;
 
     /*@Column(nullable = false)
     private int idCurso;*/

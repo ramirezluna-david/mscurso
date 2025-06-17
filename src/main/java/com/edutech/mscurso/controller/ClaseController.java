@@ -1,12 +1,13 @@
 package com.edutech.mscurso.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+// import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+// import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,13 +44,13 @@ public class ClaseController {
 
     @PostMapping
     public ResponseEntity<Clase> createClase(@RequestBody Clase clase) {
-        int idLink = clase.getModulo().getIdModulo();
+        Long idLink = clase.getModulo().getIdModulo();
         Modulo modulo = moduloService.moduloxId(idLink);
         if(modulo != null) {
             clase.setModulo(modulo);
         }
 
-        Clase buscarClase = claseService.findById(clase.getIdClase());
+        Optional<Clase> buscarClase = claseService.findById(clase.getIdClase());
         if(buscarClase == null) {
             Clase nuevaClase = claseService.save(clase);
             return new ResponseEntity<>(nuevaClase, HttpStatus.ACCEPTED);
@@ -59,17 +60,20 @@ public class ClaseController {
     }
 
     @GetMapping("/{idClase}")
-    public ResponseEntity<Clase> readClase(@PathVariable int idClase) {
-        Clase clase = claseService.findById(idClase);
-        if(clase != null) {
-            return new ResponseEntity<>(clase, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Clase> readClase(@PathVariable Long idClase) {
+        // Optional<Clase> clase = claseService.findById(idClase);
+        // if(clase != null) {
+        //     return new ResponseEntity<>(clase, HttpStatus.OK);
+        // } else {
+        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // }
+        return claseService.findById(idClase)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{idClase}")
-    public ResponseEntity<Clase> updateClase(@PathVariable int idClase, @RequestBody Clase clase) {
+    public ResponseEntity<Clase> updateClase(@PathVariable Long idClase, @RequestBody Clase clase) {
         if(claseService.update(idClase, clase)) {
             return new ResponseEntity<>(clase, HttpStatus.OK);
         } else {
@@ -90,7 +94,7 @@ public class ClaseController {
     // }
 
     @PatchMapping("/{idClase}/modificar/visibilidad")
-    public ResponseEntity<?> cambiarVisibilidad(@PathVariable int idClase) {
+    public ResponseEntity<?> cambiarVisibilidad(@PathVariable Long idClase) {
         if(claseService.cambiarVisibilidad(idClase)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -99,7 +103,7 @@ public class ClaseController {
     }
 
     @PatchMapping("/{idClase}/activar")
-    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable int idClase) {
+    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable Long idClase) {
         if(claseService.activar(idClase)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

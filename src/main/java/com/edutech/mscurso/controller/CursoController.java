@@ -2,6 +2,7 @@ package com.edutech.mscurso.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class CursoController {
 
     @PostMapping
     public ResponseEntity<Curso> createCurso(@RequestBody Curso curso) {
-        Curso buscar = cursoService.findById(curso.getIdCurso());
+        Optional<Curso> buscar = cursoService.findById(curso.getIdCurso());
         if(buscar == null) {
             Curso nuevoCurso = cursoService.save(curso);
             return new ResponseEntity<>(nuevoCurso, HttpStatus.ACCEPTED);
@@ -50,18 +51,21 @@ public class CursoController {
     }
 
     @GetMapping("/{idCurso}")
-    public ResponseEntity<Curso> readCurso(@PathVariable int idCurso) {
-        Curso buscarCurso = cursoService.findById(idCurso);
-        if(buscarCurso != null) {
-            return new ResponseEntity<>(buscarCurso, HttpStatus.OK);
-        } else {
-            // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Curso> readCurso(@PathVariable Long idCurso) {
+        // Curso buscarCurso = cursoService.findById(idCurso);
+        // if(buscarCurso != null) {
+        //     return new ResponseEntity<>(buscarCurso, HttpStatus.OK);
+        // } else {
+        //     // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // }
+        return cursoService.findById(idCurso)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{idCurso}")
-    public ResponseEntity<Curso> updateCurso(@PathVariable int idCurso, @RequestBody Curso curso) {
+    public ResponseEntity<Curso> updateCurso(@PathVariable Long idCurso, @RequestBody Curso curso) {
         if(cursoService.update(idCurso, curso)) {
             return new ResponseEntity<>(curso, HttpStatus.OK);
         } else {
@@ -82,7 +86,7 @@ public class CursoController {
     // }
 
     @PatchMapping("/{idCurso}/modificar/visibilidad")
-    public ResponseEntity<?> cambiarVisibilidad(@PathVariable int idCurso) {
+    public ResponseEntity<?> cambiarVisibilidad(@PathVariable Long idCurso) {
         if(cursoService.cambiarVisibilidad(idCurso)) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
@@ -91,8 +95,8 @@ public class CursoController {
     }
 
     @PatchMapping("/{idCurso}/modificar/tutor")
-    public ResponseEntity<?> asignarTutor(@PathVariable int idCurso, @RequestBody Map<String, Integer> body) {
-        int idProfesor = body.get("idProfesor");
+    public ResponseEntity<?> asignarTutor(@PathVariable Long idCurso, @RequestBody Map<String, Long> body) {
+        Long idProfesor = body.get("idProfesor");
         if(cursoService.asignarTutor(idCurso, idProfesor)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
@@ -101,7 +105,7 @@ public class CursoController {
     }
 
     @PatchMapping("{idCurso}/activar")
-    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable int idCurso) {
+    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable Long idCurso) {
         if(cursoService.activar(idCurso)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
