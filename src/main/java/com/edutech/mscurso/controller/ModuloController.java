@@ -1,11 +1,13 @@
 package com.edutech.mscurso.controller;
 
 import java.util.List;
+import java.util.Optional;
 
+// import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+// import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,13 +44,13 @@ public class ModuloController {
 
     @PostMapping
     public ResponseEntity<Modulo> createModulo(@RequestBody Modulo modulo) {
-        int idLink = modulo.getCurso().getIdCurso();
+        Long idLink = modulo.getCurso().getIdCurso();
         Curso curso = cursoService.cursoxId(idLink);
         if(curso != null) {
             modulo.setCurso(curso);
         }
 
-        Modulo buscarModulo = moduloService.findById(modulo.getIdModulo());
+        Optional<Modulo> buscarModulo = moduloService.findById(modulo.getIdModulo());
         if(buscarModulo == null) {
             Modulo nuevoModulo = moduloService.save(modulo);
             return new ResponseEntity<>(nuevoModulo, HttpStatus.ACCEPTED);
@@ -58,18 +60,21 @@ public class ModuloController {
     }
 
     @GetMapping("/{idModulo}")
-    public ResponseEntity<Modulo> readModulo(@PathVariable int idModulo) {
-        Modulo buscarModulo = moduloService.findById(idModulo);
-        if(buscarModulo != null) {
-            return new ResponseEntity<>(buscarModulo, HttpStatus.OK);
-        } else {
-            // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Modulo> readModulo(@PathVariable Long idModulo) {
+        // Modulo buscarModulo = moduloService.findById(idModulo);
+        // if(buscarModulo != null) {
+        //     return new ResponseEntity<>(buscarModulo, HttpStatus.OK);
+        // } else {
+        //     // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // }
+        return moduloService.findById(idModulo)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{idModulo}")
-    public ResponseEntity<Modulo> updateModulo(@PathVariable int idModulo, @RequestBody Modulo modulo) {
+    public ResponseEntity<Modulo> updateModulo(@PathVariable Long idModulo, @RequestBody Modulo modulo) {
         if(moduloService.update(idModulo, modulo)) {
             return new ResponseEntity<>(modulo, HttpStatus.OK);
         } else {
@@ -90,7 +95,7 @@ public class ModuloController {
     // }
 
     @PatchMapping("/{idModulo}/activar")
-    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable int idModulo) {
+    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable Long idModulo) {
         if(moduloService.activar(idModulo)) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
