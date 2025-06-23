@@ -238,4 +238,33 @@ public class CursoServiceTest {
         cursoService.deleteById(curso.getIdCurso());
         verify(cursoRepository, times(1)).deleteById(curso.getIdCurso());
     }
+
+    @Test
+    void testCambiarVisibilidad() {
+        Curso curso = new Curso();
+        curso.setIdCurso(1L);
+        curso.setPublicado(false);
+        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        when(cursoRepository.save(curso)).thenReturn(curso);
+
+        Curso cursoCambiado = cursoService.cambiarVisibilidad(1L);
+        assertNotNull(cursoCambiado);
+        assertThat(cursoCambiado.getIdCurso()).isEqualTo(1L);
+        assertThat(cursoCambiado.getPublicado()).isEqualTo(true);
+        assertTrue(cursoCambiado.getPublicado());
+    }
+
+    @Test
+    void testAsignarTutor() {
+        Curso curso = new Curso();
+        curso.setIdCurso(1L);
+        curso.setIdProfesor(3L);
+        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        when(cursoRepository.save(curso)).thenReturn(curso);
+
+        Curso cursoAsignado = cursoService.asignarTutor(1L, 5L);
+        assertNotNull(cursoAsignado);
+        assertThat(cursoAsignado.getIdCurso()).isEqualTo(1L);
+        assertThat(cursoAsignado.getIdProfesor()).isEqualTo(5L);
+    }
 }

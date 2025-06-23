@@ -65,6 +65,13 @@ public class ClaseServiceTest {
         Clase resultado = claseService.save(clase);
         assertNotNull(resultado);
         assertThat(resultado.getIdClase()).isEqualTo(1L);
+        assertThat(resultado.getTitulo()).isEqualTo(claseGuardada.getTitulo());
+        assertThat(resultado.getDescripcion()).isEqualTo(claseGuardada.getDescripcion());
+        assertThat(resultado.getCategoria()).isEqualTo(claseGuardada.getCategoria());
+        assertThat(resultado.getFechaCreacion()).isEqualTo(claseGuardada.getFechaCreacion());
+        assertThat(resultado.getPublicado()).isEqualTo(claseGuardada.getPublicado());
+        assertThat(resultado.getActivo()).isEqualTo(claseGuardada.getActivo());
+        assertThat(resultado.getModulo()).isEqualTo(claseGuardada.getModulo());
         verify(claseRepository).save(clase);
     }
 
@@ -206,5 +213,20 @@ public class ClaseServiceTest {
 
         claseService.deleteById(clase.getIdClase());
         verify(claseRepository, times(1)).deleteById(clase.getIdClase());
+    }
+
+    @Test
+    void testCambiarVisibilidad() {
+        Clase clase = new Clase();
+        clase.setIdClase(1L);
+        clase.setPublicado(false);
+        when(claseRepository.findById(1L)).thenReturn(Optional.of(clase));
+        when(claseRepository.save(clase)).thenReturn(clase);
+
+        Clase claseActualizada = claseService.cambiarVisibilidad(1L);
+        assertNotNull(claseActualizada);
+        assertThat(claseActualizada.getIdClase()).isEqualTo(1L);
+        assertThat(claseActualizada.getPublicado()).isEqualTo(true);
+        assertTrue(claseActualizada.getPublicado());
     }
 }

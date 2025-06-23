@@ -66,6 +66,11 @@ public class ModuloServiceTest {
         Modulo resultado = moduloService.save(modulo);
         assertNotNull(resultado);
         assertThat(resultado.getIdModulo()).isEqualTo(10L);
+        assertThat(resultado.getTitulo()).isEqualTo(moduloGuardar.getTitulo());
+        assertThat(resultado.getDescripcion()).isEqualTo(moduloGuardar.getDescripcion());
+        assertThat(resultado.getClases()).isEqualTo(moduloGuardar.getClases());
+        assertThat(resultado.getActivo()).isEqualTo(moduloGuardar.getActivo());
+        assertThat(resultado.getCurso()).isEqualTo(moduloGuardar.getCurso());
         verify(moduloRepository).save(modulo);
     }
 
