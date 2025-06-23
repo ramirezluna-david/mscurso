@@ -17,12 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import com.edutech.mscurso.model.Clase;
 import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.service.ClaseService;
 import com.edutech.mscurso.service.ModuloService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -38,18 +43,29 @@ public class ClaseController {
 
     @GetMapping
     @Operation(summary = "Listar Clases", description = "Obtiene una lista de todas las clases disponibles")
-    public ResponseEntity<List<Clase>> listarClases() {
-        List<Clase> clases = claseService.findAll();
-        if(clases.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Clase.class))),
+        @ApiResponse(responseCode = "404", description = "No hay contenido")
+    })
+    public List<Clase> listarClases() {
+        return claseService.findAll();
+        // if(clases.isEmpty()) {
+        //     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        // }
 
-        return new ResponseEntity<>(clases, HttpStatus.OK);
+        // return new ResponseEntity<>(clases, HttpStatus.OK);
     }
 
     @PostMapping
     @Operation(summary = "Crear Clase", description = "Crea una nueva clase asociada a un módulo")
-    public ResponseEntity<Clase> createClase(@RequestBody Clase clase) {
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Clase creada exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Clase.class))),
+    })
+    public Clase createClase(@RequestBody Clase clase) {
         Long idLink = clase.getModulo().getIdModulo();
         Modulo modulo = moduloService.moduloxId(idLink);
         if(modulo != null) {
@@ -58,10 +74,9 @@ public class ClaseController {
 
         Optional<Clase> buscarClase = claseService.findById(clase.getIdClase());
         if(buscarClase == null) {
-            Clase nuevaClase = claseService.save(clase);
-            return new ResponseEntity<>(nuevaClase, HttpStatus.ACCEPTED);
+            return claseService.save(clase);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            return null;
         }
     }
 
