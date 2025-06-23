@@ -3,7 +3,7 @@ package com.edutech.mscurso.service;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -58,6 +58,7 @@ public class ClaseServiceTest {
         when(claseRepository.save(clase)).thenReturn(claseGuardada);
 
         Clase resultado = claseService.save(clase);
+        assertNotNull(resultado);
         assertThat(resultado.getIdClase()).isEqualTo(1L);
         verify(claseRepository).save(clase);
     }
@@ -88,6 +89,7 @@ public class ClaseServiceTest {
         when(claseRepository.findAll()).thenReturn(Arrays.asList(clase1, clase2));
 
         List<Clase> resultado = claseService.findAll();
+        assertNotNull(resultado);
         assertThat(resultado).hasSize(2).contains(clase1, clase2);
         verify(claseRepository).findAll();
     }
