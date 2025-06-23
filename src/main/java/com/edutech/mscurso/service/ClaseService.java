@@ -37,46 +37,46 @@ public class ClaseService {
         return claseRepository.getReferenceById(idClase);
     } */
 
-    public Boolean cambiarVisibilidad(Long idClase) {
+    public Clase cambiarVisibilidad(Long idClase) {
         Clase buscarClase = claseRepository.findById(idClase)
             .orElseThrow(() -> new RuntimeException("No existe la clase"));
-        if(buscarClase != null) {
+        // if(buscarClase != null) {
         buscarClase.setPublicado((!buscarClase.getPublicado()));
-        claseRepository.save(buscarClase);
-            return true;
-        }
+        return claseRepository.save(buscarClase);
+        //     return true;
+        // }
 
-        return false;
+        // return false;
     }
 
-    public Boolean update(Long idClase, Clase clase) {
+    public Clase update(Long idClase, Clase clase) {
         Clase existente = claseRepository.findById(idClase)
             .orElseThrow(() -> new RuntimeException("No existe la clase"));
-        if(existente != null) {
+        // if(existente != null) {
             // existente.setIdClase(idClase);
             // existente.setIdCurso(clase.getIdCurso());
-            existente.setTitulo(clase.getTitulo());
-            existente.setDescripcion(clase.getDescripcion());
-            existente.setCategoria(clase.getCategoria());
-            existente.setFechaCreacion(clase.getFechaCreacion());
-            existente.setPublicado(clase.getPublicado());
+        existente.setTitulo(clase.getTitulo());
+        existente.setDescripcion(clase.getDescripcion());
+        existente.setCategoria(clase.getCategoria());
+        existente.setFechaCreacion(clase.getFechaCreacion());
+        existente.setPublicado(clase.getPublicado());
 
-            claseRepository.save(existente);
-            return true;
-        } else {
-            return false;
-        }
+        return claseRepository.save(existente);
+        //     return true;
+        // } else {
+        //     return false;
+        // }
     }
 
-    public Boolean activar(Long idClase) {
+    public Clase activar(Long idClase) {
         Clase buscarClase = claseRepository.findById(idClase)
             .orElseThrow(() -> new RuntimeException("No existe la clase"));
-        if(buscarClase != null) {
-            buscarClase.setActivo(!buscarClase.getPublicado());
-            claseRepository.save(buscarClase);
-            return true;
-        }
+        // if(buscarClase != null) {
+        buscarClase.setActivo(!buscarClase.getActivo());
+        return claseRepository.save(buscarClase);
+            // return true;
+        // }
 
-        return false;
+        // return false;
     }
 }

@@ -37,31 +37,31 @@ public class ModuloService {
         return moduloRepository.getReferenceById(idModulo);
     }
 
-    public Boolean update(Long idModulo, Modulo modulo) {
+    public Modulo update(Long idModulo, Modulo modulo) {
         Modulo existente = moduloRepository.findById(idModulo)
             .orElseThrow(() -> new RuntimeException("No existe módulo"));
-        if(existente != null) {
+        // if(existente != null) {
             // existente.setIdModulo(idModulo);
             // existente.setIdCurso(modulo.getIdCurso());
-            existente.setTitulo(modulo.getTitulo());
-            existente.setDescripcion(modulo.getDescripcion());
+        existente.setTitulo(modulo.getTitulo());
+        existente.setDescripcion(modulo.getDescripcion());
 
-            moduloRepository.save(existente);
-            return true;
-        } else {
-            return false;
-        }
+        return moduloRepository.save(existente);
+            // return true;
+        // } else {
+            // return false;
+        // }
     }
 
-    public Boolean activar(Long idModulo) {
+    public Modulo activar(Long idModulo) {
         Modulo buscarModulo = moduloRepository.findById(idModulo)
             .orElseThrow(() -> new RuntimeException("No existe el módulo"));
-        if(buscarModulo != null) {
-            buscarModulo.setActivo(!buscarModulo.getActivo());
-            moduloRepository.save(buscarModulo);
-            return true;
-        }
+        // if(buscarModulo != null) {
+        buscarModulo.setActivo(!buscarModulo.getActivo());
+        return moduloRepository.save(buscarModulo);
+            // return true;
+        // }
 
-        return false;
+        // return false;
     }
 }

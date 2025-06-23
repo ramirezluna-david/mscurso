@@ -75,8 +75,9 @@ public class ModuloController {
 
     @PutMapping("/{idModulo}")
     public ResponseEntity<Modulo> updateModulo(@PathVariable Long idModulo, @RequestBody Modulo modulo) {
-        if(moduloService.update(idModulo, modulo)) {
-            return new ResponseEntity<>(modulo, HttpStatus.OK);
+        Modulo moduloUpdate = moduloService.update(idModulo, modulo);
+        if(moduloUpdate != null) {
+            return new ResponseEntity<>(moduloUpdate, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -95,9 +96,10 @@ public class ModuloController {
     // }
 
     @PatchMapping("/{idModulo}/activar")
-    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable Long idModulo) {
-        if(moduloService.activar(idModulo)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Modulo> cambiarEstadoActivo(@PathVariable Long idModulo) {
+        Modulo modulo = moduloService.activar(idModulo);
+        if(modulo != null) {
+            return new ResponseEntity<>(modulo, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

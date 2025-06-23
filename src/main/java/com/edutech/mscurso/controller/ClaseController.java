@@ -74,8 +74,9 @@ public class ClaseController {
 
     @PutMapping("/{idClase}")
     public ResponseEntity<Clase> updateClase(@PathVariable Long idClase, @RequestBody Clase clase) {
-        if(claseService.update(idClase, clase)) {
-            return new ResponseEntity<>(clase, HttpStatus.OK);
+        Clase claseUpdate = claseService.update(idClase, clase);
+        if(claseUpdate != null) {
+            return new ResponseEntity<>(claseUpdate, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -94,20 +95,25 @@ public class ClaseController {
     // }
 
     @PatchMapping("/{idClase}/modificar/visibilidad")
-    public ResponseEntity<?> cambiarVisibilidad(@PathVariable Long idClase) {
-        if(claseService.cambiarVisibilidad(idClase)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Clase> cambiarVisibilidad(@PathVariable Long idClase) {
+        Clase clase =  claseService.cambiarVisibilidad(idClase);
+        if(clase != null) {
+            return new ResponseEntity<>(clase, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
     }
 
     @PatchMapping("/{idClase}/activar")
-    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable Long idClase) {
-        if(claseService.activar(idClase)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Clase> cambiarEstadoActivo(@PathVariable Long idClase) {
+        Clase clase =  claseService.activar(idClase);
+        if(clase != null) {
+            return new ResponseEntity<>(clase, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+            // .map(ResponseEntity::ok)
+            // .orElse(ResponseEntity.notFound().build());
     }
 }

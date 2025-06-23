@@ -66,8 +66,9 @@ public class CursoController {
 
     @PutMapping("/{idCurso}")
     public ResponseEntity<Curso> updateCurso(@PathVariable Long idCurso, @RequestBody Curso curso) {
-        if(cursoService.update(idCurso, curso)) {
-            return new ResponseEntity<>(curso, HttpStatus.OK);
+        Curso cursoUpdate = cursoService.update(idCurso, curso);
+        if(cursoUpdate != null) {
+            return new ResponseEntity<>(cursoUpdate, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -86,28 +87,31 @@ public class CursoController {
     // }
 
     @PatchMapping("/{idCurso}/modificar/visibilidad")
-    public ResponseEntity<?> cambiarVisibilidad(@PathVariable Long idCurso) {
-        if(cursoService.cambiarVisibilidad(idCurso)) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Curso> cambiarVisibilidad(@PathVariable Long idCurso) {
+        Curso curso = cursoService.cambiarVisibilidad(idCurso);
+        if(curso != null) {
+            return new ResponseEntity<>(curso, HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PatchMapping("/{idCurso}/modificar/tutor")
-    public ResponseEntity<?> asignarTutor(@PathVariable Long idCurso, @RequestBody Map<String, Long> body) {
+    public ResponseEntity<Curso> asignarTutor(@PathVariable Long idCurso, @RequestBody Map<String, Long> body) {
         Long idProfesor = body.get("idProfesor");
-        if(cursoService.asignarTutor(idCurso, idProfesor)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        Curso curso = cursoService.asignarTutor(idCurso, idProfesor);
+        if(curso != null) {
+            return new ResponseEntity<>(curso, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PatchMapping("{idCurso}/activar")
-    public ResponseEntity<?> cambiarEstadoActivo(@PathVariable Long idCurso) {
-        if(cursoService.activar(idCurso)) {
-            return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Curso> cambiarEstadoActivo(@PathVariable Long idCurso) {
+        Curso curso = cursoService.activar(idCurso);
+        if(curso != null) {
+            return new ResponseEntity<>(curso, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
