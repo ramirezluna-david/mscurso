@@ -71,6 +71,15 @@ public class CursoServiceTest {
         Curso resultado = cursoService.save(curso);
         assertNotNull(resultado);
         assertThat(resultado.getIdCurso()).isEqualTo(10L);
+        assertThat(resultado.getTitulo()).isEqualTo(cursoGuardar.getTitulo());
+        assertThat(resultado.getDescripcion()).isEqualTo(cursoGuardar.getDescripcion());
+        assertThat(resultado.getCategoria()).isEqualTo(cursoGuardar.getCategoria());
+        assertThat(resultado.getPrecio()).isEqualTo(cursoGuardar.getPrecio());
+        assertThat(resultado.getIdProfesor()).isEqualTo(cursoGuardar.getIdProfesor());
+        assertThat(resultado.getFechaCreacion()).isEqualTo(cursoGuardar.getFechaCreacion());
+        assertThat(resultado.getActivo()).isEqualTo(cursoGuardar.getActivo());
+        assertThat(resultado.getPublicado()).isEqualTo(cursoGuardar.getPublicado());
+        assertThat(resultado.getModulos()).isEqualTo(cursoGuardar.getModulos());
         verify(cursoRepository).save(curso);
     }
 
