@@ -22,8 +22,12 @@ import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.service.CursoService;
 import com.edutech.mscurso.service.ModuloService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/modulos")
+@Tag(name = "Modulo", description = "Operaciones CRUD para los Módulos")
 public class ModuloController {
 
     @Autowired
@@ -33,6 +37,7 @@ public class ModuloController {
     private CursoService cursoService;
 
     @GetMapping
+    @Operation(summary = "Listar Módulos", description = "Obtiene una lista de todos los módulos disponibles")
     public ResponseEntity<List<Modulo>> listarModulos() {
         List<Modulo> modulos = moduloService.findAll();
         if(modulos.isEmpty()) {
@@ -43,6 +48,7 @@ public class ModuloController {
     }
 
     @PostMapping
+    @Operation(summary = "Crear Módulo", description = "Crea un nuevo módulo asociado a un curso")
     public ResponseEntity<Modulo> createModulo(@RequestBody Modulo modulo) {
         Long idLink = modulo.getCurso().getIdCurso();
         Curso curso = cursoService.cursoxId(idLink);
@@ -60,6 +66,7 @@ public class ModuloController {
     }
 
     @GetMapping("/{idModulo}")
+    @Operation(summary = "Leer Módulo", description = "Obtiene los detalles de un módulo por su ID")
     public ResponseEntity<Modulo> readModulo(@PathVariable Long idModulo) {
         // Modulo buscarModulo = moduloService.findById(idModulo);
         // if(buscarModulo != null) {
@@ -74,6 +81,7 @@ public class ModuloController {
     }
 
     @PutMapping("/{idModulo}")
+    @Operation(summary = "Actualizar Módulo", description = "Actualiza los detalles de un módulo existente")
     public ResponseEntity<Modulo> updateModulo(@PathVariable Long idModulo, @RequestBody Modulo modulo) {
         Modulo moduloUpdate = moduloService.update(idModulo, modulo);
         if(moduloUpdate != null) {
@@ -96,6 +104,7 @@ public class ModuloController {
     // }
 
     @PatchMapping("/{idModulo}/activar")
+    @Operation(summary = "Activar Módulo", description = "Cambia el estado de un módulo a activo")
     public ResponseEntity<Modulo> cambiarEstadoActivo(@PathVariable Long idModulo) {
         Modulo modulo = moduloService.activar(idModulo);
         if(modulo != null) {

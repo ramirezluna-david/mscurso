@@ -22,8 +22,12 @@ import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.service.ClaseService;
 import com.edutech.mscurso.service.ModuloService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/clases")
+@Tag(name = "Clase", description = "Operaciones CRUD para las Clases")
 public class ClaseController {
 
     @Autowired
@@ -33,6 +37,7 @@ public class ClaseController {
     private ClaseService claseService;
 
     @GetMapping
+    @Operation(summary = "Listar Clases", description = "Obtiene una lista de todas las clases disponibles")
     public ResponseEntity<List<Clase>> listarClases() {
         List<Clase> clases = claseService.findAll();
         if(clases.isEmpty()) {
@@ -43,6 +48,7 @@ public class ClaseController {
     }
 
     @PostMapping
+    @Operation(summary = "Crear Clase", description = "Crea una nueva clase asociada a un módulo")
     public ResponseEntity<Clase> createClase(@RequestBody Clase clase) {
         Long idLink = clase.getModulo().getIdModulo();
         Modulo modulo = moduloService.moduloxId(idLink);
@@ -60,6 +66,7 @@ public class ClaseController {
     }
 
     @GetMapping("/{idClase}")
+    @Operation(summary = "Leer Clase", description = "Obtiene los detalles de una clase específica por su ID")
     public ResponseEntity<Clase> readClase(@PathVariable Long idClase) {
         // Optional<Clase> clase = claseService.findById(idClase);
         // if(clase != null) {
@@ -73,6 +80,7 @@ public class ClaseController {
     }
 
     @PutMapping("/{idClase}")
+    @Operation(summary = "Actualizar Clase", description = "Actualiza los detalles de una clase existente")
     public ResponseEntity<Clase> updateClase(@PathVariable Long idClase, @RequestBody Clase clase) {
         Clase claseUpdate = claseService.update(idClase, clase);
         if(claseUpdate != null) {
@@ -95,6 +103,7 @@ public class ClaseController {
     // }
 
     @PatchMapping("/{idClase}/modificar/visibilidad")
+    @Operation(summary = "Cambiar Visibilidad de Clase", description = "Cambia la visibilidad de una clase entre pública y privada")
     public ResponseEntity<Clase> cambiarVisibilidad(@PathVariable Long idClase) {
         Clase clase =  claseService.cambiarVisibilidad(idClase);
         if(clase != null) {
@@ -106,6 +115,7 @@ public class ClaseController {
     }
 
     @PatchMapping("/{idClase}/activar")
+    @Operation(summary = "Activar Clase", description = "Activa o Desactiva una clase para que esté disponible en la plataforma")
     public ResponseEntity<Clase> cambiarEstadoActivo(@PathVariable Long idClase) {
         Clase clase =  claseService.activar(idClase);
         if(clase != null) {
