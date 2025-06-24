@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+// import org.springframework.http.HttpStatus;
 // import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+// import org.springframework.http.ResponseEntity;
 // import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -54,7 +54,6 @@ public class ClaseController {
         // if(clases.isEmpty()) {
         //     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         // }
-
         // return new ResponseEntity<>(clases, HttpStatus.OK);
     }
 
@@ -71,7 +70,6 @@ public class ClaseController {
         if(modulo != null) {
             clase.setModulo(modulo);
         }
-
         // Optional<Clase> buscarClase = claseService.findById(clase.getIdClase());
         // if(buscarClase == null) {
         return claseService.save(clase);
@@ -102,13 +100,20 @@ public class ClaseController {
 
     @PutMapping("/{idClase}")
     @Operation(summary = "Actualizar Clase", description = "Actualiza los detalles de una clase existente")
-    public ResponseEntity<Clase> updateClase(@PathVariable Long idClase, @RequestBody Clase clase) {
-        Clase claseUpdate = claseService.update(idClase, clase);
-        if(claseUpdate != null) {
-            return new ResponseEntity<>(claseUpdate, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Clase actualizada exitosamente",
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = Clase.class))),
+        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
+    })
+    public Clase updateClase(@PathVariable Long idClase, @RequestBody Clase clase) {
+        return claseService.update(idClase, clase);
+        // Clase claseUpdate = claseService.update(idClase, clase);
+        // if(claseUpdate != null) {
+        //     return new ResponseEntity<>(claseUpdate, HttpStatus.OK);
+        // } else {
+        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // }
     }
 
     // REGISTROS YA NO SE ELIMINAN, SE CAMBIA ESTADO ACTIVO O INACTIVO
@@ -125,25 +130,38 @@ public class ClaseController {
 
     @PatchMapping("/{idClase}/modificar/visibilidad")
     @Operation(summary = "Cambiar Visibilidad de Clase", description = "Cambia la visibilidad de una clase entre pública y privada")
-    public ResponseEntity<Clase> cambiarVisibilidad(@PathVariable Long idClase) {
-        Clase clase =  claseService.cambiarVisibilidad(idClase);
-        if(clase != null) {
-            return new ResponseEntity<>(clase, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa",
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = Clase.class))),
+        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
+    })
+    public Clase cambiarVisibilidad(@PathVariable Long idClase) {
+        return claseService.cambiarVisibilidad(idClase);
+        // Clase clase =  claseService.cambiarVisibilidad(idClase);
+        // if(clase != null) {
+        //     return new ResponseEntity<>(clase, HttpStatus.OK);
+        // } else {
+        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // }
     }
 
     @PatchMapping("/{idClase}/activar")
     @Operation(summary = "Activar Clase", description = "Activa o Desactiva una clase para que esté disponible en la plataforma")
-    public ResponseEntity<Clase> cambiarEstadoActivo(@PathVariable Long idClase) {
-        Clase clase =  claseService.activar(idClase);
-        if(clase != null) {
-            return new ResponseEntity<>(clase, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa",
+                content = @Content(mediaType = "application/json",
+                        schema = @Schema(implementation = Clase.class))),
+        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
+    })
+    public Clase cambiarEstadoActivo(@PathVariable Long idClase) {
+        return claseService.activar(idClase);
+        // Clase clase =  claseService.activar(idClase);
+        // if(clase != null) {
+        //     return new ResponseEntity<>(clase, HttpStatus.OK);
+        // } else {
+        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        // }
             // .map(ResponseEntity::ok)
             // .orElse(ResponseEntity.notFound().build());
     }
