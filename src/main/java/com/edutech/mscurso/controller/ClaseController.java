@@ -72,26 +72,32 @@ public class ClaseController {
             clase.setModulo(modulo);
         }
 
-        Optional<Clase> buscarClase = claseService.findById(clase.getIdClase());
-        if(buscarClase == null) {
-            return claseService.save(clase);
-        } else {
-            return null;
-        }
+        // Optional<Clase> buscarClase = claseService.findById(clase.getIdClase());
+        // if(buscarClase == null) {
+        return claseService.save(clase);
+        // } else {
+        //     return null;
+        // }
     }
 
     @GetMapping("/{idClase}")
     @Operation(summary = "Leer Clase", description = "Obtiene los detalles de una clase específica por su ID")
-    public ResponseEntity<Clase> readClase(@PathVariable Long idClase) {
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operación exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = Clase.class))),
+        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
+    })
+    public Optional<Clase> readClase(@PathVariable Long idClase) {
         // Optional<Clase> clase = claseService.findById(idClase);
         // if(clase != null) {
         //     return new ResponseEntity<>(clase, HttpStatus.OK);
         // } else {
         //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         // }
-        return claseService.findById(idClase)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        return claseService.findById(idClase);
+            // .map(ResponseEntity::ok)
+            // .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{idClase}")
