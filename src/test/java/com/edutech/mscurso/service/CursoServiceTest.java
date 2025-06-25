@@ -40,7 +40,7 @@ public class CursoServiceTest {
     }
 
     @Test
-    void testGuardarCurso() {
+    void testSave() {
         List<Modulo> modulos = new ArrayList<>();
         Curso curso = new Curso(
             10L,
@@ -84,7 +84,7 @@ public class CursoServiceTest {
     }
 
     @Test
-    void testListarCursos() {
+    void testFindAll() {
         List<Modulo> modulos = new ArrayList<>();
         Curso curso2 = new Curso(
             11L,
@@ -151,8 +151,8 @@ public class CursoServiceTest {
         verify(cursoRepository).findById(10L);
     }
 
-        @Test
-        void testUpdateCurso() {
+    @Test
+    void testUpdate() {
         List<Modulo> modulos = new ArrayList<>();
         Curso cursoExistente = new Curso(
             1L,
@@ -198,7 +198,7 @@ public class CursoServiceTest {
     }
 
     @Test
-    void testActivar() {
+    void testActivar1() {
         Curso curso = new Curso();
         curso.setIdCurso(1L);
         curso.setActivo(false);
@@ -213,7 +213,7 @@ public class CursoServiceTest {
     }
 
     @Test
-    void testDesactivar() {
+    void testActivar2() {
         Curso curso = new Curso();
         curso.setIdCurso(1L);
         curso.setActivo(true);
@@ -262,9 +262,9 @@ public class CursoServiceTest {
         when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
         when(cursoRepository.save(curso)).thenReturn(curso);
 
-        Curso cursoAsignado = cursoService.asignarTutor(1L, 5L);
-        assertNotNull(cursoAsignado);
-        assertThat(cursoAsignado.getIdCurso()).isEqualTo(1L);
-        assertThat(cursoAsignado.getIdProfesor()).isEqualTo(5L);
+        Curso resultado = cursoService.asignarTutor(1L, 5L);
+        assertNotNull(resultado);
+        assertThat(resultado.getIdCurso()).isEqualTo(1L);
+        assertThat(resultado.getIdProfesor()).isEqualTo(5L);
     }
 }

@@ -42,7 +42,7 @@ public class ModuloServiceTest {
     }
 
     @Test
-    void testGuardarModulo() {
+    void testSave() {
         List<Clase> clases = new ArrayList<>();
         Curso curso = new Curso();
         Modulo modulo = new Modulo(
@@ -75,7 +75,7 @@ public class ModuloServiceTest {
     }
 
     @Test
-    void testListarModulos() {
+    void testFindAll() {
         List<Clase> clases = new ArrayList<>();
         Curso curso = new Curso();
         Modulo modulo1 = new Modulo(
@@ -128,7 +128,7 @@ public class ModuloServiceTest {
     }
 
     @Test
-    void testUpdateModulo() {
+    void testUpdate() {
         List<Clase> clases = new ArrayList<>();
         Curso curso = new Curso();
         Modulo moduloExistente = new Modulo(
@@ -163,7 +163,7 @@ public class ModuloServiceTest {
     }
 
     @Test
-    void testActivar() {
+    void testActivar1() {
         Modulo modulo = new Modulo();
         modulo.setIdModulo(1L);
         modulo.setActivo(false);
@@ -178,7 +178,7 @@ public class ModuloServiceTest {
     }
 
     @Test
-    void testDesactivar() {
+    void testActivar2() {
         Modulo modulo = new Modulo();
         modulo.setIdModulo(1L);
         modulo.setActivo(true);

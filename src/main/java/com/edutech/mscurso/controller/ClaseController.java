@@ -60,7 +60,7 @@ public class ClaseController {
     @PostMapping
     @Operation(summary = "Crear Clase", description = "Crea una nueva clase asociada a un módulo")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Clase creada exitosa",
+        @ApiResponse(responseCode = "200", description = "Clase creada con éxito",
             content = @Content(mediaType = "application/json",
                 schema = @Schema(implementation = Clase.class))),
     })

@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -38,7 +39,7 @@ public class ClaseServiceTest {
     }
 
     @Test
-    void testGuardarClase() {
+    void testSave() {
         Modulo modulo1 = new Modulo();
         Clase clase = new Clase(
             null,
@@ -76,7 +77,7 @@ public class ClaseServiceTest {
     }
 
     @Test
-    void testListarClases() {
+    void testFindAll() {
         Modulo modulo1 = new Modulo();
         Clase clase1 = new Clase(
             1L,
@@ -135,7 +136,7 @@ public class ClaseServiceTest {
     }
 
     @Test
-    void testUpdateClase() {
+    void testUpdate() {
         Modulo modulo1 = new Modulo();
         Clase claseExistente = new Clase(
             1L,
@@ -173,8 +174,9 @@ public class ClaseServiceTest {
         verify(claseRepository).findById(1L);
     }
 
+    @DisplayName("Devuelve True al llamar al método activar")
     @Test
-    void testActivar() {
+    void testActivar1() {
         Clase clase = new Clase();
         clase.setIdClase(1L);
         clase.setActivo(false);
@@ -189,8 +191,9 @@ public class ClaseServiceTest {
         assertTrue(claseActivar.getActivo());
     }
 
+    @DisplayName("Devuelve False al llamar al método activar")
     @Test
-    void testDesactivar() {
+    void testActivar2() {
         Clase clase = new Clase();
         clase.setIdClase(1L);
         clase.setActivo(true);
