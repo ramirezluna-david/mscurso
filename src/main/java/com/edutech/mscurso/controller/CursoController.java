@@ -2,13 +2,8 @@ package com.edutech.mscurso.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-// import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,12 +42,6 @@ public class CursoController {
     })
     public List<Curso> listarCursos() {
         return cursoService.findAll();
-        // List<Curso> cursos = cursoService.findAll();
-        // if(cursos.isEmpty()) {
-        //     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        // }
-
-        // return new ResponseEntity<>(cursos, HttpStatus.OK);
     }
 
     @PostMapping
@@ -64,14 +53,6 @@ public class CursoController {
     })
     public Curso createCurso(@RequestBody Curso curso) {
         return cursoService.save(curso);
-        // Optional<Curso> buscar = cursoService.findById(curso.getIdCurso());
-        // if(buscar == null) {
-        //     Curso nuevoCurso = cursoService.save(curso);
-        //     return new ResponseEntity<>(nuevoCurso, HttpStatus.ACCEPTED);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        // }
-
     }
 
     @GetMapping("/{idCurso}")
@@ -82,17 +63,8 @@ public class CursoController {
                 schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Curso no encontrado")
     })
-    public Optional<Curso> readCurso(@PathVariable Long idCurso) {
-        // Curso buscarCurso = cursoService.findById(idCurso);
-        // if(buscarCurso != null) {
-        //     return new ResponseEntity<>(buscarCurso, HttpStatus.OK);
-        // } else {
-        //     // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
+    public Curso readCurso(@PathVariable int idCurso) {
         return cursoService.findById(idCurso);
-            // .map(ResponseEntity::ok)
-            // .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{idCurso}")
@@ -103,14 +75,8 @@ public class CursoController {
                         schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Curso no encontrado")
     })
-    public Curso updateCurso(@PathVariable Long idCurso, @RequestBody Curso curso) {
+    public Curso updateCurso(@PathVariable int idCurso, @RequestBody Curso curso) {
         return cursoService.update(idCurso, curso);
-        // Curso cursoUpdate = cursoService.update(idCurso, curso);
-        // if(cursoUpdate != null) {
-        //     return new ResponseEntity<>(cursoUpdate, HttpStatus.OK);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
     }
 
     // REGISTROS YA NO SE ELIMINAN, SE CAMBIA ESTADO ACTIVO O INACTIVO
@@ -133,14 +99,8 @@ public class CursoController {
                         schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Curso no encontrado")
     })
-    public Curso cambiarVisibilidad(@PathVariable Long idCurso) {
+    public Curso cambiarVisibilidad(@PathVariable int idCurso) {
         return cursoService.cambiarVisibilidad(idCurso);
-        // Curso curso = cursoService.cambiarVisibilidad(idCurso);
-        // if(curso != null) {
-        //     return new ResponseEntity<>(curso, HttpStatus.NO_CONTENT);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
     }
 
     @PatchMapping("/{idCurso}/modificar/tutor")
@@ -151,15 +111,9 @@ public class CursoController {
                         schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Curso no encontrado")
     })
-    public Curso asignarTutor(@PathVariable Long idCurso, @RequestBody Map<String, Long> body) {
-        Long idProfesor = body.get("idProfesor");
-        // Curso curso = cursoService.asignarTutor(idCurso, idProfesor);
+    public Curso asignarTutor(@PathVariable int idCurso, @RequestBody Map<String, Integer> body) {
+        int idProfesor = body.get("idProfesor");
         return cursoService.asignarTutor(idCurso, idProfesor);
-        // if(curso != null) {
-        //     return new ResponseEntity<>(curso, HttpStatus.OK);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
     }
 
     @PatchMapping("{idCurso}/activar")
@@ -170,13 +124,7 @@ public class CursoController {
                         schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Curso no encontrado")
     })
-    public Curso cambiarEstadoActivo(@PathVariable Long idCurso) {
+    public Curso cambiarEstadoActivo(@PathVariable int idCurso) {
         return cursoService.activar(idCurso);
-        // Curso curso = cursoService.activar(idCurso);
-        // if(curso != null) {
-        //     return new ResponseEntity<>(curso, HttpStatus.OK);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
     }
 }

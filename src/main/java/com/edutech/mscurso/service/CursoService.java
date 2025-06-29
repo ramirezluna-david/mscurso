@@ -1,8 +1,6 @@
 package com.edutech.mscurso.service;
 
 import java.util.List;
-// import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,7 @@ public class CursoService {
         return cursoRepository.save(curso);
     }
 
-    public Optional<Curso> findById(Long idCurso) {
+    public Curso findById(int idCurso) {
         return cursoRepository.findById(idCurso);
     }
 
@@ -28,31 +26,22 @@ public class CursoService {
         return cursoRepository.findAll();
     }
 
-    public void deleteById(Long idCurso) {
+    public void deleteById(int idCurso) {
         cursoRepository.deleteById(idCurso);
     }
 
-    public Curso cursoxId(Long idCurso) {
+    public Curso cursoxId(int idCurso) {
         return cursoRepository.getReferenceById(idCurso);
     }
 
-    public Curso cambiarVisibilidad(Long idCurso) {
-        Curso buscarCurso = cursoRepository.findById(idCurso)
-            .orElseThrow(() -> new RuntimeException("No existe el curso"));
-        // if(buscarCurso != null) {
+    public Curso cambiarVisibilidad(int idCurso) {
+        Curso buscarCurso = cursoRepository.findById(idCurso);
         buscarCurso.setPublicado((!buscarCurso.getPublicado()));
         return cursoRepository.save(buscarCurso);
-            // return true;
-        // }
-
-        // return false;
     }
 
-    public Curso update(Long idCurso, Curso curso) {
-        Curso existente = cursoRepository.findById(idCurso)
-            .orElseThrow(() -> new RuntimeException("No existe el curso"));
-        // if(existente != null) {
-        // existente.setIdCurso(idCurso);
+    public Curso update(int idCurso, Curso curso) {
+        Curso existente = cursoRepository.findById(idCurso);
         existente.setTitulo(curso.getTitulo());
         existente.setDescripcion(curso.getDescripcion());
         existente.setCategoria(curso.getCategoria());
@@ -60,35 +49,18 @@ public class CursoService {
         existente.setIdProfesor(curso.getIdProfesor());
         existente.setFechaCreacion(curso.getFechaCreacion());
         existente.setPublicado(curso.getPublicado());
-
         return cursoRepository.save(existente);
-        //     return true;
-        // } else {
-        //     return false;
-        // }
     }
 
-    public Curso asignarTutor(Long idCurso, Long idProfesor) {
-        Curso buscarCurso = cursoRepository.findById(idCurso)
-            .orElseThrow(() -> new RuntimeException("No existe el curso"));
-        // if(buscarCurso != null) {
+    public Curso asignarTutor(int idCurso, int idProfesor) {
+        Curso buscarCurso = cursoRepository.findById(idCurso);
         buscarCurso.setIdProfesor(idProfesor);
         return cursoRepository.save(buscarCurso);
-            // return true;
-        // }
-
-        // return false;
     }
 
-    public Curso activar(Long idCurso) {
-        Curso buscarCurso = cursoRepository.findById(idCurso)
-            .orElseThrow(() -> new RuntimeException("No existe el curso"));
-        // if(buscarCurso != null) {
+    public Curso activar(int idCurso) {
+        Curso buscarCurso = cursoRepository.findById(idCurso);
         buscarCurso.setActivo(!buscarCurso.getActivo());
         return cursoRepository.save(buscarCurso);
-            // return true;
-        // }
-
-        // return false;
     }
 }

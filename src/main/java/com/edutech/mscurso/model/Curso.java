@@ -28,7 +28,7 @@ public class Curso {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCurso;
+    private int idCurso;
 
     @Column(length = 50, nullable = false)
     private String titulo;
@@ -43,7 +43,7 @@ public class Curso {
     private double precio;
 
     @Column(nullable = false)
-    private Long idProfesor;
+    private int idProfesor;
 
     @Column(nullable = false)
     private LocalDate fechaCreacion;

@@ -1,11 +1,8 @@
 package com.edutech.mscurso.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.edutech.mscurso.model.Modulo;
@@ -21,7 +18,7 @@ public class ModuloService {
         return moduloRepository.save(modulo);
     }
 
-    public Optional<Modulo> findById(Long idModulo) {
+    public Modulo findById(int idModulo) {
         return moduloRepository.findById(idModulo);
     }
 
@@ -29,39 +26,25 @@ public class ModuloService {
         return moduloRepository.findAll();
     }
 
-    public void deleteById(Long idCurso) {
+    public void deleteById(int idCurso) {
         moduloRepository.deleteById(idCurso);
     }
 
-    public Modulo moduloxId(Long idModulo) {
+    public Modulo moduloxId(int idModulo) {
         return moduloRepository.getReferenceById(idModulo);
     }
 
-    public Modulo update(Long idModulo, Modulo modulo) {
-        Modulo existente = moduloRepository.findById(idModulo)
-            .orElseThrow(() -> new RuntimeException("No existe módulo"));
-        // if(existente != null) {
-            // existente.setIdModulo(idModulo);
-            // existente.setIdCurso(modulo.getIdCurso());
+    public Modulo update(int idModulo, Modulo modulo) {
+        Modulo existente = moduloRepository.findById(idModulo);
         existente.setTitulo(modulo.getTitulo());
         existente.setDescripcion(modulo.getDescripcion());
 
         return moduloRepository.save(existente);
-            // return true;
-        // } else {
-            // return false;
-        // }
     }
 
-    public Modulo activar(Long idModulo) {
-        Modulo buscarModulo = moduloRepository.findById(idModulo)
-            .orElseThrow(() -> new RuntimeException("No existe el módulo"));
-        // if(buscarModulo != null) {
+    public Modulo activar(int idModulo) {
+        Modulo buscarModulo = moduloRepository.findById(idModulo);
         buscarModulo.setActivo(!buscarModulo.getActivo());
         return moduloRepository.save(buscarModulo);
-            // return true;
-        // }
-
-        // return false;
     }
 }

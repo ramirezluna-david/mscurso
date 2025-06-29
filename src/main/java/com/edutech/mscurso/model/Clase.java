@@ -27,10 +27,7 @@ public class Clase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idClase;
-
-    /*@Column(nullable = false)
-    private int idCurso;*/
+    private int idClase;
 
     @Column(length = 50, nullable = false)
     private String titulo;

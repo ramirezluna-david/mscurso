@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-// import com.edutech.mscurso.model.Clase;
 import com.edutech.mscurso.model.Curso;
 import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.repository.CursoRepository;
@@ -43,24 +41,24 @@ public class CursoServiceTest {
     void testSave() {
         List<Modulo> modulos = new ArrayList<>();
         Curso curso = new Curso(
-            10L,
+            10,
             "Programación en Java desde cero",
             "Curso completo para aprender Java desde lo más básico.",
             "Programación",
             49.99,
-            5L,
+            5,
             LocalDate.of(2024, 9, 15),
             true,
             true,
             modulos
         );
         Curso cursoGuardar = new Curso(
-            10L,
+            10,
             "Programación en Java desde cero",
             "Curso completo para aprender Java desde lo más básico.",
             "Programación",
             49.99,
-            5L,
+            5,
             LocalDate.of(2024, 9, 15),
             true,
             true,
@@ -70,7 +68,7 @@ public class CursoServiceTest {
 
         Curso resultado = cursoService.save(curso);
         assertNotNull(resultado);
-        assertThat(resultado.getIdCurso()).isEqualTo(10L);
+        assertThat(resultado.getIdCurso()).isEqualTo(10);
         assertThat(resultado.getTitulo()).isEqualTo(cursoGuardar.getTitulo());
         assertThat(resultado.getDescripcion()).isEqualTo(cursoGuardar.getDescripcion());
         assertThat(resultado.getCategoria()).isEqualTo(cursoGuardar.getCategoria());
@@ -87,12 +85,12 @@ public class CursoServiceTest {
     void testFindAll() {
         List<Modulo> modulos = new ArrayList<>();
         Curso curso2 = new Curso(
-            11L,
+            11,
             "Java Intermedio",
             "Curso sobre colecciones, streams y manejo de errores.",
             "Programación",
             59.99,
-            6L,
+            6,
             LocalDate.of(2024, 10, 5),
             true,
             true,
@@ -100,12 +98,12 @@ public class CursoServiceTest {
         );
 
         Curso curso3 = new Curso(
-            12L,
+            12,
             "Java Avanzado",
             "Hilos, concurrencia y patrones de diseño en Java.",
             "Programación",
             69.99,
-            7L,
+            7,
             LocalDate.of(2024, 10, 20),
             false,
             true,
@@ -123,67 +121,67 @@ public class CursoServiceTest {
     void testFindById() {
         List<Modulo> modulos = new ArrayList<>();
         Curso curso1 = new Curso(
-            10L,
+            10,
             "Programación en Java desde cero",
             "Curso completo para aprender Java desde lo más básico.",
             "Programación",
             49.99,
-            5L,
+            5,
             LocalDate.of(2024, 9, 15),
             true,
             true,
             modulos
         );
 
-        when(cursoRepository.findById(10L)).thenReturn(Optional.of(curso1));
-        Optional<Curso> resultado = cursoService.findById(10L);
+        when(cursoRepository.findById(10)).thenReturn(curso1);
+        Curso resultado = cursoService.findById(10);
         assertNotNull(resultado);
-        assertThat(resultado.get().getIdCurso()).isEqualTo(10L);
-        assertThat(resultado.get().getTitulo()).isEqualTo(curso1.getTitulo());
-        assertThat(resultado.get().getDescripcion()).isEqualTo(curso1.getDescripcion());
-        assertThat(resultado.get().getCategoria()).isEqualTo(curso1.getCategoria());
-        assertThat(resultado.get().getPrecio()).isEqualTo(curso1.getPrecio());
-        assertThat(resultado.get().getIdProfesor()).isEqualTo(curso1.getIdProfesor());
-        assertThat(resultado.get().getFechaCreacion()).isEqualTo(curso1.getFechaCreacion());
-        assertThat(resultado.get().getActivo()).isEqualTo(curso1.getActivo());
-        assertThat(resultado.get().getPublicado()).isEqualTo(curso1.getPublicado());
-        assertThat(resultado.get().getModulos()).isEqualTo(curso1.getModulos());
-        verify(cursoRepository).findById(10L);
+        assertThat(resultado.getIdCurso()).isEqualTo(10);
+        assertThat(resultado.getTitulo()).isEqualTo(curso1.getTitulo());
+        assertThat(resultado.getDescripcion()).isEqualTo(curso1.getDescripcion());
+        assertThat(resultado.getCategoria()).isEqualTo(curso1.getCategoria());
+        assertThat(resultado.getPrecio()).isEqualTo(curso1.getPrecio());
+        assertThat(resultado.getIdProfesor()).isEqualTo(curso1.getIdProfesor());
+        assertThat(resultado.getFechaCreacion()).isEqualTo(curso1.getFechaCreacion());
+        assertThat(resultado.getActivo()).isEqualTo(curso1.getActivo());
+        assertThat(resultado.getPublicado()).isEqualTo(curso1.getPublicado());
+        assertThat(resultado.getModulos()).isEqualTo(curso1.getModulos());
+        verify(cursoRepository).findById(10);
     }
 
     @Test
     void testUpdate() {
         List<Modulo> modulos = new ArrayList<>();
         Curso cursoExistente = new Curso(
-            1L,
+            1,
             "Introducción a Java",
             "Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas.",
             "Programación",
             29.99,
-            3L,
+            3,
             LocalDate.of(2025, 6, 10),
             true,
             true,
             modulos
         );
         Curso cursoActualizado = new Curso(
-            1L,
+            1,
             "Programación en Java desde cero",
             "Curso completo para aprender Java desde lo más básico.",
             "Programación",
             49.99,
-            5L,
+            5,
             LocalDate.of(2024, 9, 15),
             true,
             true,
             modulos
         );
-        when(cursoRepository.findById(1L)).thenReturn(Optional.of(cursoExistente));
+        when(cursoRepository.findById(1)).thenReturn(cursoExistente);
         when(cursoRepository.save(cursoActualizado)).thenReturn(cursoActualizado);
 
-        Curso resultado = cursoService.update(1L, cursoActualizado);
+        Curso resultado = cursoService.update(1, cursoActualizado);
         assertNotNull(resultado);
-        assertThat(resultado.getIdCurso()).isEqualTo(1L);
+        assertThat(resultado.getIdCurso()).isEqualTo(1);
         assertThat(resultado.getTitulo()).isEqualTo(cursoActualizado.getTitulo());
         assertThat(resultado.getDescripcion()).isEqualTo(cursoActualizado.getDescripcion());
         assertThat(resultado.getCategoria()).isEqualTo(cursoActualizado.getCategoria());
@@ -193,21 +191,21 @@ public class CursoServiceTest {
         assertThat(resultado.getActivo()).isEqualTo(cursoActualizado.getActivo());
         assertThat(resultado.getPublicado()).isEqualTo(cursoActualizado.getPublicado());
         assertThat(resultado.getModulos()).isEqualTo(cursoActualizado.getModulos());
-        verify(cursoRepository).findById(1L);
+        verify(cursoRepository).findById(1);
         verify(cursoRepository).save(cursoActualizado);
     }
 
     @Test
     void testActivar1() {
         Curso curso = new Curso();
-        curso.setIdCurso(1L);
+        curso.setIdCurso(1);
         curso.setActivo(false);
-        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        when(cursoRepository.findById(1)).thenReturn(curso);
         when(cursoRepository.save(curso)).thenReturn(curso);
 
-        Curso cursoActivar = cursoService.activar(1L);
+        Curso cursoActivar = cursoService.activar(1);
         assertNotNull(cursoActivar);
-        assertThat(cursoActivar.getIdCurso()).isEqualTo(1L);
+        assertThat(cursoActivar.getIdCurso()).isEqualTo(1);
         assertThat(cursoActivar.getActivo()).isEqualTo(true);
         assertTrue(cursoActivar.getActivo());
     }
@@ -215,15 +213,15 @@ public class CursoServiceTest {
     @Test
     void testActivar2() {
         Curso curso = new Curso();
-        curso.setIdCurso(1L);
+        curso.setIdCurso(1);
         curso.setActivo(true);
         curso.setPublicado(false);
-        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        when(cursoRepository.findById(1)).thenReturn(curso);
         when(cursoRepository.save(curso)).thenReturn(curso);
 
-        Curso cursoActivar = cursoService.activar(1L);
+        Curso cursoActivar = cursoService.activar(1);
         assertNotNull(cursoActivar);
-        assertThat(cursoActivar.getIdCurso()).isEqualTo(1L);
+        assertThat(cursoActivar.getIdCurso()).isEqualTo(1);
         assertThat(cursoActivar.getActivo()).isEqualTo(false);
         assertFalse(cursoActivar.getActivo());
     }
@@ -231,7 +229,7 @@ public class CursoServiceTest {
     @Test
     void testDeleteById() {
         Curso curso = new Curso();
-        curso.setIdCurso(1L);
+        curso.setIdCurso(1);
         curso.setPublicado(false);
         doNothing().when(cursoRepository).deleteById(curso.getIdCurso());
 
@@ -242,14 +240,14 @@ public class CursoServiceTest {
     @Test
     void testCambiarVisibilidad() {
         Curso curso = new Curso();
-        curso.setIdCurso(1L);
+        curso.setIdCurso(1);
         curso.setPublicado(false);
-        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        when(cursoRepository.findById(1)).thenReturn(curso);
         when(cursoRepository.save(curso)).thenReturn(curso);
 
-        Curso cursoCambiado = cursoService.cambiarVisibilidad(1L);
+        Curso cursoCambiado = cursoService.cambiarVisibilidad(1);
         assertNotNull(cursoCambiado);
-        assertThat(cursoCambiado.getIdCurso()).isEqualTo(1L);
+        assertThat(cursoCambiado.getIdCurso()).isEqualTo(1);
         assertThat(cursoCambiado.getPublicado()).isEqualTo(true);
         assertTrue(cursoCambiado.getPublicado());
     }
@@ -257,14 +255,14 @@ public class CursoServiceTest {
     @Test
     void testAsignarTutor() {
         Curso curso = new Curso();
-        curso.setIdCurso(1L);
-        curso.setIdProfesor(3L);
-        when(cursoRepository.findById(1L)).thenReturn(Optional.of(curso));
+        curso.setIdCurso(1);
+        curso.setIdProfesor(3);
+        when(cursoRepository.findById(1)).thenReturn(curso);
         when(cursoRepository.save(curso)).thenReturn(curso);
 
-        Curso resultado = cursoService.asignarTutor(1L, 5L);
+        Curso resultado = cursoService.asignarTutor(1, 5);
         assertNotNull(resultado);
-        assertThat(resultado.getIdCurso()).isEqualTo(1L);
-        assertThat(resultado.getIdProfesor()).isEqualTo(5L);
+        assertThat(resultado.getIdCurso()).isEqualTo(1);
+        assertThat(resultado.getIdProfesor()).isEqualTo(5);
     }
 }

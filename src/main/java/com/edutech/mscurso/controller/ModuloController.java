@@ -1,13 +1,8 @@
 package com.edutech.mscurso.controller;
 
 import java.util.List;
-import java.util.Optional;
 
-// import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,15 +44,8 @@ public class ModuloController {
                         schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "No hay contenido")
     })
-
     public List<Modulo> listarModulos() {
         return moduloService.findAll();
-        // List<Modulo> modulos = moduloService.findAll();
-        // if(modulos.isEmpty()) {
-        //     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        // }
-
-        // return new ResponseEntity<>(modulos, HttpStatus.OK);
     }
 
     @PostMapping
@@ -68,20 +56,12 @@ public class ModuloController {
                 schema = @Schema(implementation = Clase.class))),
     })
     public Modulo createModulo(@RequestBody Modulo modulo) {
-        Long idLink = modulo.getCurso().getIdCurso();
+        int idLink = modulo.getCurso().getIdCurso();
         Curso curso = cursoService.cursoxId(idLink);
         if(curso != null) {
             modulo.setCurso(curso);
         }
-
         return moduloService.save(modulo);
-        // Optional<Modulo> buscarModulo = moduloService.findById(modulo.getIdModulo());
-        // if(buscarModulo == null) {
-        //     Modulo nuevoModulo = moduloService.save(modulo);
-        //     return new ResponseEntity<>(nuevoModulo, HttpStatus.ACCEPTED);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        // }
     }
 
     @GetMapping("/{idModulo}")
@@ -92,17 +72,8 @@ public class ModuloController {
                 schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Módulo no encontrado")
     })
-    public Optional<Modulo> readModulo(@PathVariable Long idModulo) {
-        // Modulo buscarModulo = moduloService.findById(idModulo);
-        // if(buscarModulo != null) {
-        //     return new ResponseEntity<>(buscarModulo, HttpStatus.OK);
-        // } else {
-        //     // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
+    public Modulo readModulo(@PathVariable int idModulo) {
         return moduloService.findById(idModulo);
-            // .map(ResponseEntity::ok)
-            // .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{idModulo}")
@@ -113,14 +84,8 @@ public class ModuloController {
                         schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Módulo no encontrado")
     })
-    public Modulo updateModulo(@PathVariable Long idModulo, @RequestBody Modulo modulo) {
+    public Modulo updateModulo(@PathVariable int idModulo, @RequestBody Modulo modulo) {
         return moduloService.update(idModulo, modulo);
-        // Modulo moduloUpdate = moduloService.update(idModulo, modulo);
-        // if(moduloUpdate != null) {
-        //     return new ResponseEntity<>(moduloUpdate, HttpStatus.OK);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
     }
 
     // REGISTROS YA NO SE ELIMINAN, SE CAMBIA ESTADO ACTIVO O INACTIVO
@@ -143,13 +108,7 @@ public class ModuloController {
                         schema = @Schema(implementation = Clase.class))),
         @ApiResponse(responseCode = "404", description = "Módulo no encontrado")
     })
-    public Modulo cambiarEstadoActivo(@PathVariable Long idModulo) {
+    public Modulo cambiarEstadoActivo(@PathVariable int idModulo) {
         return moduloService.activar(idModulo);
-        // Modulo modulo = moduloService.activar(idModulo);
-        // if(modulo != null) {
-        //     return new ResponseEntity<>(modulo, HttpStatus.OK);
-        // } else {
-        //     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        // }
     }
 }

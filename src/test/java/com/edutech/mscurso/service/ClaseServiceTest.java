@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -42,7 +41,7 @@ public class ClaseServiceTest {
     void testSave() {
         Modulo modulo1 = new Modulo();
         Clase clase = new Clase(
-            null,
+            1,
             "Introducción a Java", // titulo
             "Esta clase cubre los fundamentos básicos del lenguaje de programación Java.", // descripcion
             "Programación", // categoria
@@ -52,7 +51,7 @@ public class ClaseServiceTest {
             modulo1 // modulo
         );
         Clase claseGuardada = new Clase(
-            1L,
+            1,
             "Introducción a Java", // titulo
             "Esta clase cubre los fundamentos básicos del lenguaje de programación Java.", // descripcion
             "Programación", // categoria
@@ -65,7 +64,7 @@ public class ClaseServiceTest {
 
         Clase resultado = claseService.save(clase);
         assertNotNull(resultado);
-        assertThat(resultado.getIdClase()).isEqualTo(1L);
+        assertThat(resultado.getIdClase()).isEqualTo(1);
         assertThat(resultado.getTitulo()).isEqualTo(claseGuardada.getTitulo());
         assertThat(resultado.getDescripcion()).isEqualTo(claseGuardada.getDescripcion());
         assertThat(resultado.getCategoria()).isEqualTo(claseGuardada.getCategoria());
@@ -80,7 +79,7 @@ public class ClaseServiceTest {
     void testFindAll() {
         Modulo modulo1 = new Modulo();
         Clase clase1 = new Clase(
-            1L,
+            1,
             "Introducción a Java",
             "Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas.",
             "Programación",
@@ -90,7 +89,7 @@ public class ClaseServiceTest {
             modulo1
         );
         Clase clase2 = new Clase(
-            2L,
+            2,
             "POO en Java",
             "Explora la Programación Orientada a Objetos: clases, herencia, encapsulamiento y más.",
             "Programación",
@@ -111,7 +110,7 @@ public class ClaseServiceTest {
     void testFindById() {
         Modulo modulo1 = new Modulo();
         Clase clase1 = new Clase(
-        100L,
+        100,
         "POO en Java",
         "Clase sobre los fundamentos de la programación orientada a objetos en Java.",
         "Programación",
@@ -119,27 +118,26 @@ public class ClaseServiceTest {
         true,
         true,
         modulo1
-        );
-        when(claseRepository.findById(100L)).thenReturn(Optional.of(clase1));
+        );        when(claseRepository.findById(100)).thenReturn(clase1);
 
-        Optional<Clase> resultado = claseService.findById(100L);
+        Clase resultado = claseService.findById(100);
         assertNotNull(resultado);
-        assertThat(resultado.get().getIdClase()).isEqualTo(100L);
-        assertThat(resultado.get().getTitulo()).isEqualTo(clase1.getTitulo());
-        assertThat(resultado.get().getDescripcion()).isEqualTo(clase1.getDescripcion());
-        assertThat(resultado.get().getCategoria()).isEqualTo(clase1.getCategoria());
-        assertThat(resultado.get().getFechaCreacion()).isEqualTo(clase1.getFechaCreacion());
-        assertThat(resultado.get().getPublicado()).isEqualTo(clase1.getPublicado());
-        assertThat(resultado.get().getActivo()).isEqualTo(clase1.getActivo());
-        assertThat(resultado.get().getModulo()).isEqualTo(clase1.getModulo());
-        verify(claseRepository).findById(100L);
+        assertThat(resultado.getIdClase()).isEqualTo(100);
+        assertThat(resultado.getTitulo()).isEqualTo(clase1.getTitulo());
+        assertThat(resultado.getDescripcion()).isEqualTo(clase1.getDescripcion());
+        assertThat(resultado.getCategoria()).isEqualTo(clase1.getCategoria());
+        assertThat(resultado.getFechaCreacion()).isEqualTo(clase1.getFechaCreacion());
+        assertThat(resultado.getPublicado()).isEqualTo(clase1.getPublicado());
+        assertThat(resultado.getActivo()).isEqualTo(clase1.getActivo());
+        assertThat(resultado.getModulo()).isEqualTo(clase1.getModulo());
+        verify(claseRepository).findById(100);
     }
 
     @Test
     void testUpdate() {
         Modulo modulo1 = new Modulo();
         Clase claseExistente = new Clase(
-            1L,
+            1,
             "Introducción a Java",
             "Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas.",
             "Programación",
@@ -149,7 +147,7 @@ public class ClaseServiceTest {
             modulo1
         );
         Clase claseActualizada = new Clase(
-        1L,
+        1,
         "POO en Java",
         "Clase sobre los fundamentos de la programación orientada a objetos en Java.",
         "Programación",
@@ -158,12 +156,12 @@ public class ClaseServiceTest {
         true,
         modulo1
         );
-        when(claseRepository.findById(1L)).thenReturn(Optional.of(claseExistente));
+        when(claseRepository.findById(1)).thenReturn(claseExistente);
         when(claseRepository.save(claseExistente)).thenReturn(claseExistente);
 
-        Clase resultado = claseService.update(1L, claseActualizada);
+        Clase resultado = claseService.update(1, claseActualizada);
         assertNotNull(resultado);
-        assertThat(resultado.getIdClase()).isEqualTo(1L);
+        assertThat(resultado.getIdClase()).isEqualTo(1);
         assertThat(resultado.getTitulo()).isEqualTo(claseActualizada.getTitulo());
         assertThat(resultado.getDescripcion()).isEqualTo(claseActualizada.getDescripcion());
         assertThat(resultado.getCategoria()).isEqualTo(claseActualizada.getCategoria());
@@ -171,22 +169,22 @@ public class ClaseServiceTest {
         assertThat(resultado.getPublicado()).isEqualTo(claseActualizada.getPublicado());
         assertThat(resultado.getActivo()).isEqualTo(claseActualizada.getActivo());
         assertThat(resultado.getModulo()).isEqualTo(claseActualizada.getModulo());
-        verify(claseRepository).findById(1L);
+        verify(claseRepository).findById(1);
     }
 
     @DisplayName("Devuelve True al llamar al método activar")
     @Test
     void testActivar1() {
         Clase clase = new Clase();
-        clase.setIdClase(1L);
+        clase.setIdClase(1);
         clase.setActivo(false);
         clase.setPublicado(false);
-        when(claseRepository.findById(1L)).thenReturn(Optional.of(clase));
+        when(claseRepository.findById(1)).thenReturn(clase);
         when(claseRepository.save(clase)).thenReturn(clase);
 
-        Clase claseActivar = claseService.activar(1L);
+        Clase claseActivar = claseService.activar(1);
         assertNotNull(claseActivar);
-        assertThat(claseActivar.getIdClase()).isEqualTo(1L);
+        assertThat(claseActivar.getIdClase()).isEqualTo(1);
         assertThat(claseActivar.getActivo()).isEqualTo(true);
         assertTrue(claseActivar.getActivo());
     }
@@ -195,15 +193,15 @@ public class ClaseServiceTest {
     @Test
     void testActivar2() {
         Clase clase = new Clase();
-        clase.setIdClase(1L);
+        clase.setIdClase(1);
         clase.setActivo(true);
         clase.setPublicado(false);
-        when(claseRepository.findById(1L)).thenReturn(Optional.of(clase));
+        when(claseRepository.findById(1)).thenReturn(clase);
         when(claseRepository.save(clase)).thenReturn(clase);
 
-        Clase claseActivar = claseService.activar(1L);
+        Clase claseActivar = claseService.activar(1);
         assertNotNull(claseActivar);
-        assertThat(claseActivar.getIdClase()).isEqualTo(1L);
+        assertThat(claseActivar.getIdClase()).isEqualTo(1);
         assertThat(claseActivar.getActivo()).isEqualTo(false);
         assertFalse(claseActivar.getActivo());
     }
@@ -211,7 +209,7 @@ public class ClaseServiceTest {
     @Test
     void testDeleteById() {
         Clase clase = new Clase();
-        clase.setIdClase(1L);
+        clase.setIdClase(1);
         doNothing().when(claseRepository).deleteById(clase.getIdClase());
 
         claseService.deleteById(clase.getIdClase());
@@ -221,14 +219,14 @@ public class ClaseServiceTest {
     @Test
     void testCambiarVisibilidad() {
         Clase clase = new Clase();
-        clase.setIdClase(1L);
+        clase.setIdClase(1);
         clase.setPublicado(false);
-        when(claseRepository.findById(1L)).thenReturn(Optional.of(clase));
+        when(claseRepository.findById(1)).thenReturn(clase);
         when(claseRepository.save(clase)).thenReturn(clase);
 
-        Clase claseActualizada = claseService.cambiarVisibilidad(1L);
+        Clase claseActualizada = claseService.cambiarVisibilidad(1);
         assertNotNull(claseActualizada);
-        assertThat(claseActualizada.getIdClase()).isEqualTo(1L);
+        assertThat(claseActualizada.getIdClase()).isEqualTo(1);
         assertThat(claseActualizada.getPublicado()).isEqualTo(true);
         assertTrue(claseActualizada.getPublicado());
     }
