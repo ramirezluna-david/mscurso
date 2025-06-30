@@ -29,7 +29,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/v2/cursos")
-@Tag(name = "Curso", description = "Operaciones CRUD para los Cursos")
+@Tag(name = "CursoV2", description = "Operaciones CRUD para los Cursos")
 public class CursoControllerV2 {
 
     @Autowired
@@ -39,7 +39,7 @@ public class CursoControllerV2 {
     private CursoModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
-
+    @Operation(summary = "Listar Cursos", description = "Obtiene una lista de todos los cursos disponibles")
     public CollectionModel<EntityModel<Curso>> listarCursos() {
         List<EntityModel<Curso>> cursos = cursoService.findAll().stream()
             .map(assembler::toModel)
@@ -59,7 +59,7 @@ public class CursoControllerV2 {
     }
 
     @GetMapping(value = "/{idCurso}", produces = MediaTypes.HAL_JSON_VALUE)
-
+    @Operation(summary = "Leer Curso", description = "Obtiene los detalles de un curso por su ID")
     public EntityModel<Curso> readCurso(@PathVariable int idCurso) {
         Curso curso = cursoService.findById(idCurso);
         return assembler.toModel(curso);

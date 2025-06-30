@@ -70,6 +70,7 @@ public class ClaseControllerV2 {
     }
 
     @GetMapping(value = "/{idClase}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Leer Clase", description = "Obtiene los detalles de una clase específica por su ID")
     public EntityModel<Clase> readClase(@PathVariable int idClase) {
         Clase clase = claseService.findById(idClase);
         return assembler.toModel(clase);
