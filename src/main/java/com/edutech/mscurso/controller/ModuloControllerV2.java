@@ -23,10 +23,14 @@ import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.service.CursoService;
 import com.edutech.mscurso.service.ModuloService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/v2/modulos")
+@Tag(name = "Modulo", description = "Operaciones CRUD para los Módulos")
 public class ModuloControllerV2 {
 
     @Autowired
@@ -39,6 +43,7 @@ public class ModuloControllerV2 {
     private ModuloModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Listar Módulos", description = "Obtiene una lista de todos los módulos disponibles")
     public CollectionModel<EntityModel<Modulo>> listarModulos() {
         List<EntityModel<Modulo>> modulos = moduloService.findAll().stream()
             .map(assembler::toModel)
@@ -48,6 +53,7 @@ public class ModuloControllerV2 {
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Crear Módulo", description = "Crea un nuevo módulo asociado a un curso")
     public ResponseEntity<EntityModel<Modulo>> createModulo(@RequestBody Modulo modulo) {
         int idLink = modulo.getCurso().getIdCurso();
         Curso curso = cursoService.cursoxId(idLink);
@@ -61,12 +67,14 @@ public class ModuloControllerV2 {
     }
 
     @GetMapping(value = "/{idModulo}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Leer Módulo", description = "Obtiene los detalles de un módulo por su ID")
     public EntityModel<Modulo> readModulo(@PathVariable int idModulo) {
         Modulo nuevoModulo = moduloService.findById(idModulo);
         return assembler.toModel(nuevoModulo);
     }
 
     @PutMapping(value = "/{idModulo}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Actualizar Módulo", description = "Actualiza los detalles de un módulo existente")
     public ResponseEntity<EntityModel<Modulo>> updateModulo(@PathVariable int idModulo, @RequestBody Modulo modulo) {
         Modulo moduloActualizado = moduloService.update(idModulo, modulo);
         return ResponseEntity
@@ -86,6 +94,7 @@ public class ModuloControllerV2 {
     // }
 
     @PatchMapping(value ="/{idModulo}/activar", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Activar Módulo", description = "Cambia el estado de un módulo a activo")
     public ResponseEntity<EntityModel<Modulo>> cambiarEstadoActivo(@PathVariable int idModulo) {
         Modulo moduloActualizado = moduloService.activar(idModulo);
         return ResponseEntity

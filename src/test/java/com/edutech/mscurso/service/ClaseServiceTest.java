@@ -19,11 +19,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.edutech.mscurso.model.Clase;
 import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.repository.ClaseRepository;
 
+@SpringBootTest
 public class ClaseServiceTest {
 
     @Mock

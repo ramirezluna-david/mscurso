@@ -22,10 +22,14 @@ import com.edutech.mscurso.assemblers.CursoModelAssembler;
 import com.edutech.mscurso.model.Curso;
 import com.edutech.mscurso.service.CursoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/v2/cursos")
+@Tag(name = "Curso", description = "Operaciones CRUD para los Cursos")
 public class CursoControllerV2 {
 
     @Autowired
@@ -35,6 +39,7 @@ public class CursoControllerV2 {
     private CursoModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+
     public CollectionModel<EntityModel<Curso>> listarCursos() {
         List<EntityModel<Curso>> cursos = cursoService.findAll().stream()
             .map(assembler::toModel)
@@ -45,6 +50,7 @@ public class CursoControllerV2 {
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Crear Curso", description = "Crea un nuevo curso")
     public ResponseEntity<EntityModel<Curso>> createCurso(@RequestBody Curso curso) {
         Curso nuevoCurso = cursoService.save(curso);
         return ResponseEntity
@@ -53,12 +59,14 @@ public class CursoControllerV2 {
     }
 
     @GetMapping(value = "/{idCurso}", produces = MediaTypes.HAL_JSON_VALUE)
+
     public EntityModel<Curso> readCurso(@PathVariable int idCurso) {
         Curso curso = cursoService.findById(idCurso);
         return assembler.toModel(curso);
     }
 
     @PutMapping(value = "/{idCurso}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Actualizar Curso", description = "Actualiza los detalles de un curso existente")
     public ResponseEntity<EntityModel<Curso>> updateCurso(@PathVariable int idCurso, @RequestBody Curso curso) {
         Curso cursoActualizado = cursoService.update(idCurso, curso);
         return ResponseEntity
@@ -78,6 +86,7 @@ public class CursoControllerV2 {
     // }
 
     @PatchMapping(value = "/{idCurso}/modificar/visibilidad", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Cambiar Visibilidad del Curso", description = "Cambia la visibilidad de un curso (público/privado)")
     public ResponseEntity<EntityModel<Curso>> cambiarVisibilidad(@PathVariable int idCurso) {
         Curso cursoActualizado = cursoService.cambiarVisibilidad(idCurso);
         return ResponseEntity
@@ -86,6 +95,7 @@ public class CursoControllerV2 {
     }
 
     @PatchMapping(value = "/{idCurso}/modificar/tutor", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Asignar Tutor al Curso", description = "Asigna un tutor a un curso específico")
     public ResponseEntity<EntityModel<Curso>> asignarTutor(@PathVariable int idCurso, @RequestBody Map<String, Integer> body) {
         int idProfesor = body.get("idProfesor");
         Curso cursoActualizado = cursoService.asignarTutor(idCurso, idProfesor);
@@ -94,6 +104,7 @@ public class CursoControllerV2 {
     }
 
     @PatchMapping(value = "{idCurso}/activar", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Activar Curso", description = "Activa o Desactiva un curso para que esté disponible en la plataforma")
     public ResponseEntity<EntityModel<Curso>> cambiarEstadoActivo(@PathVariable int idCurso) {
         Curso cursoActualizado = cursoService.activar(idCurso);
         return ResponseEntity

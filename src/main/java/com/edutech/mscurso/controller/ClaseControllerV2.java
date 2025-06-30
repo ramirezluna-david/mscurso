@@ -20,6 +20,9 @@ import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.service.ClaseService;
 import com.edutech.mscurso.service.ModuloService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 
@@ -28,6 +31,7 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
+@Tag(name = "ClaseV2", description = "Operaciones CRUD para las Clases")
 @RequestMapping("/api/v2/clases")
 public class ClaseControllerV2 {
 
@@ -41,6 +45,7 @@ public class ClaseControllerV2 {
     private ClaseModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Listar Clases", description = "Obtiene una lista de todas las clases disponibles")
     public CollectionModel<EntityModel<Clase>> listarClases() {
         List<EntityModel<Clase>> clases = claseService.findAll().stream()
             .map(assembler::toModel)
@@ -51,6 +56,7 @@ public class ClaseControllerV2 {
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Crear Clase", description = "Crea una nueva clase asociada a un módulo")
     public ResponseEntity<EntityModel<Clase>> createClase(@RequestBody Clase clase) {
         int idLink = clase.getModulo().getIdModulo();
         Modulo modulo = moduloService.moduloxId(idLink);
@@ -70,6 +76,7 @@ public class ClaseControllerV2 {
     }
 
     @PutMapping(value = "/{idClase}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Leer Clase", description = "Obtiene los detalles de una clase específica por su ID")
     public ResponseEntity<EntityModel<Clase>> updateClase(@PathVariable int idClase, @RequestBody Clase clase) {
         Clase claseActualizada = claseService.update(idClase, clase);
         return ResponseEntity
@@ -89,6 +96,7 @@ public class ClaseControllerV2 {
     // }
 
     @PatchMapping(value = "/{idClase}/modificar/visibilidad", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Cambiar Visibilidad de Clase", description = "Cambia la visibilidad de una clase entre pública y privada")
     public ResponseEntity<EntityModel<Clase>> cambiarVisibilidad(@PathVariable int idClase) {
         Clase claseActualizada = claseService.cambiarVisibilidad(idClase);
         return ResponseEntity
@@ -96,6 +104,7 @@ public class ClaseControllerV2 {
     }
 
     @PatchMapping(value = "/{idClase}/activar", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Activar Clase", description = "Activa o Desactiva una clase para que esté disponible en la plataforma")
     public ResponseEntity<EntityModel<Clase>> cambiarEstadoActivo(@PathVariable int idClase) {
         Clase claseActualizada = claseService.activar(idClase);
         return ResponseEntity
