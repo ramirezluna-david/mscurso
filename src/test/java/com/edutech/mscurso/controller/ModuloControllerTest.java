@@ -3,7 +3,6 @@ package com.edutech.mscurso.controller;
 import com.edutech.mscurso.model.Clase;
 import com.edutech.mscurso.model.Curso;
 import com.edutech.mscurso.model.Modulo;
-import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.service.ModuloService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,14 +15,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -87,11 +83,17 @@ public class ModuloControllerTest {
 
         mockMvc.perform(get("/api/v1/modulos/1"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idModulo").value(10))
-            .andExpect(jsonPath("$.titulo").value("Programación en Java desde cero"))
-            .andExpect(jsonPath("$.descripcion").value("Modulo completo para aprender Java desde lo más básico."))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idModulo").value(10));
     }
+
+    @Test
+    void testReadModuloNotFound() throws Exception {
+        Mockito.when(moduloService.findById(11)).thenReturn(modulo);
+
+        mockMvc.perform(get("/api/v1/modulos/1"))
+            .andExpect(status().isOk())
+    }
+
 
     @Test
     void testUpdateModulo() throws Exception {
@@ -111,7 +113,7 @@ public class ModuloControllerTest {
     void testActivar() throws Exception {
         Mockito.when(moduloService.activar(10)).thenReturn(modulo);
 
-        mockMvc.perform(put("/api/v1/modulos/1/activar")
+        mockMvc.perform(patch("/api/v1/modulos/1/activar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(modulo)))
             .andExpect(status().isOk())

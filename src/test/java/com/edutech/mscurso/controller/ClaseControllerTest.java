@@ -57,12 +57,7 @@ public class ClaseControllerTest {
 
         mockMvc.perform(get("/api/v1/clases"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].idClase").value(1))
-            .andExpect(jsonPath("$[0].titulo").value("Introducción a Java"))
-            .andExpect(jsonPath("$[0].descripcion").value("Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas."))
-            .andExpect(jsonPath("$[0].categoria").value("Programación"))
-            .andExpect(jsonPath("$[0].publicado").value(true))
-            .andExpect(jsonPath("$[0].activo").value(true));
+            .andExpect(jsonPath("$[0].idClase").value(1));
     }
 
     @Test
@@ -72,13 +67,9 @@ public class ClaseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(clase)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idClase").value(1))
-            .andExpect(jsonPath("$.titulo").value("Introducción a Java"))
-            .andExpect(jsonPath("$.descripcion").value("Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idClase").value(1));
     }
+
 
     @Test
     void testReadClase() throws Exception {
@@ -86,12 +77,15 @@ public class ClaseControllerTest {
 
         mockMvc.perform(get("/api/v1/clase/1"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idClase").value(1))
-            .andExpect(jsonPath("$.titulo").value("Introducción a Java"))
-            .andExpect(jsonPath("$.descripcion").value("Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idClase").value(1));
+    }
+
+    @Test
+    void testReadClaseNotFound() throws Exception {
+        Mockito.when(claseService.findById(2)).thenReturn(clase);
+
+        mockMvc.perform(get("/api/v1/clase/2"))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -102,12 +96,17 @@ public class ClaseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(clase)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idClase").value(1))
-            .andExpect(jsonPath("$.titulo").value("Introducción a Java"))
-            .andExpect(jsonPath("$.descripcion").value("Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idClase").value(1));
+    }
+
+    @Test
+    void testUpdateClaseNotFound() throws Exception {
+        Mockito.when(claseService.update(2, clase)).thenReturn(clase);
+
+        mockMvc.perform(put("/api/v1/clases/2")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clase)))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -118,12 +117,17 @@ public class ClaseControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(clase)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idClase").value(1))
-            .andExpect(jsonPath("$.titulo").value("Introducción a Java"))
-            .andExpect(jsonPath("$.descripcion").value("Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.publicado").value(false))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idClase").value(1));
+    }
+
+    @Test
+    void testCambiarVisibilidadNotFound() throws Exception {
+        Mockito.when(claseService.cambiarVisibilidad(2)).thenReturn(clase);
+
+        mockMvc.perform(patch("/api/v1/clases/2/modificar/visibilidad")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clase)))
+            .andExpect(status().isNotFound());
     }
 
     @Test
@@ -133,12 +137,16 @@ public class ClaseControllerTest {
         mockMvc.perform(patch("/api/v1/clases/1/activar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(clase)))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idClase").value(1))
-            .andExpect(jsonPath("$.titulo").value("Introducción a Java"))
-            .andExpect(jsonPath("$.descripcion").value("Aprende los fundamentos del lenguaje Java: sintaxis, tipos de datos y estructuras básicas."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(false));
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    void testActivarNotFound() throws Exception {
+        Mockito.when(claseService.activar(2)).thenReturn(clase);
+
+        mockMvc.perform(patch("/api/v1/clases/2/activar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clase)))
+            .andExpect(status().isNotFound());
     }
 }

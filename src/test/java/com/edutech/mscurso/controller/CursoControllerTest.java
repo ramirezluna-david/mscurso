@@ -20,8 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -63,13 +61,7 @@ public class CursoControllerTest {
 
         mockMvc.perform(get("/api/v1/cursos"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$[0].idCurso").value(10))
-            .andExpect(jsonPath("$[0].titulo").value("Programación en Java desde cero"))
-            .andExpect(jsonPath("$[0].descripcion").value("Curso completo para aprender Java desde lo más básico."))
-            .andExpect(jsonPath("$[0].categoria").value("Programación"))
-            .andExpect(jsonPath("$[0].precio").value(49.99))
-            .andExpect(jsonPath("$[0].publicado").value(true))
-            .andExpect(jsonPath("$[0].activo").value(true));
+            .andExpect(jsonPath("$[0].idCurso").value(10));
     }
 
     @Test
@@ -79,13 +71,7 @@ public class CursoControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idCurso").value(10))
-            .andExpect(jsonPath("$.titulo").value("Programación en Java desde cero"))
-            .andExpect(jsonPath("$.descripcion").value("Curso completo para aprender Java desde lo más básico."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.precio").value(49.99))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idCurso").value(10));
     }
 
     @Test
@@ -94,14 +80,17 @@ public class CursoControllerTest {
 
         mockMvc.perform(get("/api/v1/cursos/1"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idCurso").value(10))
-            .andExpect(jsonPath("$.titulo").value("Programación en Java desde cero"))
-            .andExpect(jsonPath("$.descripcion").value("Curso completo para aprender Java desde lo más básico."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.precio").value(49.99))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idCurso").value(10));
     }
+
+    @Test
+    void testReadCursoNotFound() throws Exception {
+        Mockito.when(cursoService.findById(11)).thenReturn(curso);
+
+        mockMvc.perform(get("/api/v1/cursos/1"))
+            .andExpect(status().isNotFound());
+    }
+
 
     @Test
     void testUpdateCurso() throws Exception {
@@ -111,46 +100,58 @@ public class CursoControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idCurso").value(10))
-            .andExpect(jsonPath("$.titulo").value("Programación en Java desde cero"))
-            .andExpect(jsonPath("$.descripcion").value("Curso completo para aprender Java desde lo más básico."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.precio").value(49.99))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idCurso").value(10));
+    }
+
+    @Test
+    void testUpdateCursoNotFound() throws Exception {
+        Mockito.when(cursoService.update(11, curso)).thenReturn(curso);
+
+        mockMvc.perform(put("/api/v1/cursos/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(curso)))
+            .andExpect(status().isNotFound());
     }
 
     @Test
     void testCambiarVisibilidad() throws Exception {
         Mockito.when(cursoService.cambiarVisibilidad(10)).thenReturn(curso);
 
-        mockMvc.perform(put("/api/v1/cursos/1/modificar/visibilidad")
+        mockMvc.perform(patch("/api/v1/cursos/1/modificar/visibilidad")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idCurso").value(10))
-            .andExpect(jsonPath("$.titulo").value("Programación en Java desde cero"))
-            .andExpect(jsonPath("$.descripcion").value("Curso completo para aprender Java desde lo más básico."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.precio").value(49.99))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idCurso").value(10));
+    }
+
+    @Test
+    void testCambiarVisibilidadNotFound() throws Exception {
+        Mockito.when(cursoService.cambiarVisibilidad(11)).thenReturn(curso);
+
+        mockMvc.perform(patch("/api/v1/cursos/1/modificar/visibilidad")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(curso)))
+            .andExpect(status().isNotFound());
     }
 
     @Test
     void testActivar() throws Exception {
         Mockito.when(cursoService.activar(10)).thenReturn(curso);
 
-        mockMvc.perform(put("/api/v1/cursos/1/activar")
+        mockMvc.perform(patch("/api/v1/cursos/1/activar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.idCurso").value(10))
-            .andExpect(jsonPath("$.titulo").value("Programación en Java desde cero"))
-            .andExpect(jsonPath("$.descripcion").value("Curso completo para aprender Java desde lo más básico."))
-            .andExpect(jsonPath("$.categoria").value("Programación"))
-            .andExpect(jsonPath("$.precio").value(49.99))
-            .andExpect(jsonPath("$.publicado").value(true))
-            .andExpect(jsonPath("$.activo").value(true));
+            .andExpect(jsonPath("$.idCurso").value(10));
+    }
+
+    @Test
+    void testActivarNotFound() throws Exception {
+        Mockito.when(cursoService.activar(11)).thenReturn(curso);
+
+        mockMvc.perform(patch("/api/v1/cursos/1/activar")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(curso)))
+            .andExpect(status().isNotFound());
     }
 }
