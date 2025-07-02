@@ -17,8 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.Arrays;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -116,7 +114,7 @@ public class ClaseControllerTest {
     void testCambiarVisibilidad() throws Exception {
         Mockito.when(claseService.cambiarVisibilidad(1)).thenReturn(clase);
 
-        mockMvc.perform(put("/api/v1/clases/1/modificar/visibilidad")
+        mockMvc.perform(patch("/api/v1/clases/1/modificar/visibilidad")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(clase)))
             .andExpect(status().isOk())
@@ -132,7 +130,7 @@ public class ClaseControllerTest {
     void testActivar() throws Exception {
         Mockito.when(claseService.activar(1)).thenReturn(clase);
 
-        mockMvc.perform(put("/api/v1/clases/1/activar")
+        mockMvc.perform(patch("/api/v1/clases/1/activar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(clase)))
             .andExpect(status().isOk())

@@ -3,6 +3,8 @@ package com.edutech.mscurso.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,17 +14,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-
 import com.edutech.mscurso.model.Clase;
 import com.edutech.mscurso.model.Modulo;
 import com.edutech.mscurso.service.ClaseService;
 import com.edutech.mscurso.service.ModuloService;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -38,54 +35,52 @@ public class ClaseController {
 
     @GetMapping
     @Operation(summary = "Listar Clases", description = "Obtiene una lista de todas las clases disponibles")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Operación exitosa",
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = Clase.class))),
-        @ApiResponse(responseCode = "404", description = "No hay contenido")
-    })
-    public List<Clase> listarClases() {
-        return claseService.findAll();
+    public ResponseEntity<List<Clase>> listarClases() {
+        List<Clase> clases = claseService.findAll();
+        if(clases.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(clases, HttpStatus.OK);
     }
 
     @PostMapping
     @Operation(summary = "Crear Clase", description = "Crea una nueva clase asociada a un módulo")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Clase creada con éxito",
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = Clase.class))),
-    })
-    public Clase createClase(@RequestBody Clase clase) {
+    public ResponseEntity<Clase> createClase(@RequestBody Clase clase) {
         int idLink = clase.getModulo().getIdModulo();
         Modulo modulo = moduloService.moduloxId(idLink);
         if(modulo != null) {
             clase.setModulo(modulo);
         }
-        return claseService.save(clase);
+        Clase buscarClase = claseService.findById(clase.getIdClase());
+        if(buscarClase == null) {
+            Clase nuevaClase = claseService.save(clase);
+            return new ResponseEntity<>(nuevaClase, HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+        }
+
     }
 
     @GetMapping("/{idClase}")
     @Operation(summary = "Leer Clase", description = "Obtiene los detalles de una clase específica por su ID")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Operación exitosa",
-            content = @Content(mediaType = "application/json",
-                schema = @Schema(implementation = Clase.class))),
-        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
-    })
-    public Clase readClase(@PathVariable int idClase) {
-        return claseService.findById(idClase);
+    public ResponseEntity<Clase> readClase(@PathVariable int idClase) {
+        Clase buscarClase = claseService.findById(idClase);
+        if(buscarClase != null) {
+            return new ResponseEntity<>(buscarClase, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PutMapping("/{idClase}")
     @Operation(summary = "Actualizar Clase", description = "Actualiza los detalles de una clase existente")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Clase actualizada exitosamente",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = Clase.class))),
-        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
-    })
-    public Clase updateClase(@PathVariable int idClase, @RequestBody Clase clase) {
-        return claseService.update(idClase, clase);
+    public ResponseEntity<Clase> updateClase(@PathVariable int idClase, @RequestBody Clase clase) {
+        Clase actualizarClase = claseService.update(idClase, clase);
+        if(actualizarClase != null) {
+            return new ResponseEntity<>(actualizarClase, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     // REGISTROS YA NO SE ELIMINAN, SE CAMBIA ESTADO ACTIVO O INACTIVO
@@ -102,25 +97,23 @@ public class ClaseController {
 
     @PatchMapping("/{idClase}/modificar/visibilidad")
     @Operation(summary = "Cambiar Visibilidad de Clase", description = "Cambia la visibilidad de una clase entre pública y privada")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Operación exitosa",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = Clase.class))),
-        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
-    })
-    public Clase cambiarVisibilidad(@PathVariable int idClase) {
-        return claseService.cambiarVisibilidad(idClase);
+    public ResponseEntity<Clase> cambiarVisibilidad(@PathVariable int idClase) {
+        Clase habilitarClase = claseService.cambiarVisibilidad(idClase);
+        if(habilitarClase != null) {
+            return new ResponseEntity<>(habilitarClase, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PatchMapping("/{idClase}/activar")
     @Operation(summary = "Activar Clase", description = "Activa o Desactiva una clase para que esté disponible en la plataforma")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Operación exitosa",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = Clase.class))),
-        @ApiResponse(responseCode = "404", description = "Clase no encontrada")
-    })
-    public Clase cambiarEstadoActivo(@PathVariable int idClase) {
-        return claseService.activar(idClase);
+    public ResponseEntity<Clase> cambiarEstadoActivo(@PathVariable int idClase) {
+        Clase activarClase = claseService.activar(idClase);
+        if(activarClase != null) {
+            return new ResponseEntity<>(activarClase, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
