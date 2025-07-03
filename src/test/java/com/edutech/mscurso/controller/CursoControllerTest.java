@@ -78,16 +78,16 @@ public class CursoControllerTest {
     void testReadCurso() throws Exception {
         Mockito.when(cursoService.findById(10)).thenReturn(curso);
 
-        mockMvc.perform(get("/api/v1/cursos/1"))
+        mockMvc.perform(get("/api/v1/cursos/10"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.idCurso").value(10));
     }
 
     @Test
     void testReadCursoNotFound() throws Exception {
-        Mockito.when(cursoService.findById(11)).thenReturn(curso);
+        // Mockito.when(cursoService.findById(11)).thenReturn(curso);
 
-        mockMvc.perform(get("/api/v1/cursos/1"))
+        mockMvc.perform(get("/api/v1/cursos/11"))
             .andExpect(status().isNotFound());
     }
 
@@ -96,7 +96,7 @@ public class CursoControllerTest {
     void testUpdateCurso() throws Exception {
         Mockito.when(cursoService.update(10, curso)).thenReturn(curso);
 
-        mockMvc.perform(put("/api/v1/cursos/1")
+        mockMvc.perform(put("/api/v1/cursos/10")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isOk())
@@ -105,9 +105,9 @@ public class CursoControllerTest {
 
     @Test
     void testUpdateCursoNotFound() throws Exception {
-        Mockito.when(cursoService.update(11, curso)).thenReturn(curso);
+        // Mockito.when(cursoService.update(11, curso)).thenReturn(curso);
 
-        mockMvc.perform(put("/api/v1/cursos/1")
+        mockMvc.perform(put("/api/v1/cursos/11")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isNotFound());
@@ -117,7 +117,7 @@ public class CursoControllerTest {
     void testCambiarVisibilidad() throws Exception {
         Mockito.when(cursoService.cambiarVisibilidad(10)).thenReturn(curso);
 
-        mockMvc.perform(patch("/api/v1/cursos/1/modificar/visibilidad")
+        mockMvc.perform(patch("/api/v1/cursos/10/modificar/visibilidad")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isOk())
@@ -126,9 +126,9 @@ public class CursoControllerTest {
 
     @Test
     void testCambiarVisibilidadNotFound() throws Exception {
-        Mockito.when(cursoService.cambiarVisibilidad(11)).thenReturn(curso);
+        // Mockito.when(cursoService.cambiarVisibilidad(11)).thenReturn(curso);
 
-        mockMvc.perform(patch("/api/v1/cursos/1/modificar/visibilidad")
+        mockMvc.perform(patch("/api/v1/cursos/11/modificar/visibilidad")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isNotFound());
@@ -138,7 +138,7 @@ public class CursoControllerTest {
     void testActivar() throws Exception {
         Mockito.when(cursoService.activar(10)).thenReturn(curso);
 
-        mockMvc.perform(patch("/api/v1/cursos/1/activar")
+        mockMvc.perform(patch("/api/v1/cursos/10/activar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isOk())
@@ -147,9 +147,9 @@ public class CursoControllerTest {
 
     @Test
     void testActivarNotFound() throws Exception {
-        Mockito.when(cursoService.activar(11)).thenReturn(curso);
+        // Mockito.when(cursoService.activar(11)).thenReturn(curso);
 
-        mockMvc.perform(patch("/api/v1/cursos/1/activar")
+        mockMvc.perform(patch("/api/v1/cursos/11/activar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(curso)))
             .andExpect(status().isNotFound());

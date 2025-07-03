@@ -82,7 +82,7 @@ public class ClaseControllerTest {
 
     @Test
     void testReadClaseNotFound() throws Exception {
-        Mockito.when(claseService.findById(2)).thenReturn(clase);
+        // Mockito.when(claseService.findById(2)).thenReturn(clase);
 
         mockMvc.perform(get("/api/v1/clase/2"))
             .andExpect(status().isNotFound());
@@ -101,7 +101,7 @@ public class ClaseControllerTest {
 
     @Test
     void testUpdateClaseNotFound() throws Exception {
-        Mockito.when(claseService.update(2, clase)).thenReturn(clase);
+        // Mockito.when(claseService.update(2, clase)).thenReturn(clase);
 
         mockMvc.perform(put("/api/v1/clases/2")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -122,7 +122,7 @@ public class ClaseControllerTest {
 
     @Test
     void testCambiarVisibilidadNotFound() throws Exception {
-        Mockito.when(claseService.cambiarVisibilidad(2)).thenReturn(clase);
+        // Mockito.when(claseService.cambiarVisibilidad(2)).thenReturn(clase);
 
         mockMvc.perform(patch("/api/v1/clases/2/modificar/visibilidad")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -137,12 +137,13 @@ public class ClaseControllerTest {
         mockMvc.perform(patch("/api/v1/clases/1/activar")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(clase)))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.idClase").value(1));
     }
 
     @Test
     void testActivarNotFound() throws Exception {
-        Mockito.when(claseService.activar(2)).thenReturn(clase);
+        // Mockito.when(claseService.activar(2)).thenReturn(clase);
 
         mockMvc.perform(patch("/api/v1/clases/2/activar")
                 .contentType(MediaType.APPLICATION_JSON)
